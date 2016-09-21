@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="Notification Settings">
+
+        <SwitchPreference
+            android:defaultValue="true"
+
+            android:key="notification_state"
+            android:summary="Notification is Enabled"
+            android:title="Show Notification" />
+
+        <!--<CheckBoxPreference-->
+        <!--android:key="disable_internet"-->
+        <!--android:title="Office hours internet"-->
+        <!--android:summary="Functionality will disable internet from Morning 10AM to 5PM" />-->
+        <!--<Preference-->
+        <!--android:title="Data usage"-->
+        <!--android:key="datausage"-->
+        <!--android:defaultValue="false"-->
+        <!--android:summary="Data traffic is disabled"/>-->
+
+        <Preference
+            android:key="reset_data"
+            android:summary="All data will be removed"
+            android:title="Reset Data" />
+
+
+    </PreferenceCategory>
+
+    <!--<PreferenceCategory-->
+    <!--android:title="User Settings">-->
+    <!--<EditTextPreference-->
+    <!--android:key="username"-->
+    <!--android:title="User Name"-->
+    <!--android:defaultValue="User Name appears Here"-->
+    <!--android:summary="Enter User Name"-->
+    <!--android:dialogTitle="User Name" />-->
+    <!--<ListPreference-->
+    <!--android:key="animals_list"-->
+    <!--android:title="Favourite Animal"-->
+    <!--android:summary="%s"-->
+    <!--android:defaultValue="0"-->
+    <!--android:entries="@array/animalsdetails"-->
+    <!--android:entryValues="@array/animalsvalues"-->
+    <!--android:dialogTitle="Choose favourite Animal" />-->
+    <!--</PreferenceCategory>-->
+
+</PreferenceScreen>

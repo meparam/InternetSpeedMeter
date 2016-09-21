@@ -1,20 +1,192 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/content_main"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context="com.tofabd.internetspeedmeter.MainActivity"
+android:background="#FFFFFF"
+    >
+
+<LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.tofabd.internetspeedmeter.MainActivity"
-    tools:showIn="@layout/app_bar_main">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:id="@+id/id_titlebar"
+    android:weightSum="13"
+    android:background="#2979FF"
+    android:paddingTop="3dp"
+    android:paddingBottom="2dp">
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Date"
+        android:id="@+id/textView"
+        android:layout_weight="4"
+        android:gravity="left"
+        android:paddingLeft="15dp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Wifi"
+        android:id="@+id/textView2"
+        android:layout_weight="3"
+        android:gravity="right"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:paddingRight="2dp" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Mobile"
+        android:id="@+id/textView3"
+        android:layout_weight="3"
+        android:gravity="right"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:paddingRight="2dp" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Total"
+        android:id="@+id/textView4"
+        android:layout_weight="3"
+        android:gravity="right"
+        android:paddingRight="10dp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF" />
+</LinearLayout>
+
+<android.support.v7.widget.RecyclerView
+    android:id="@+id/cardList"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/id_titlebar"
+    android:background="#FFFFFF" />
+
+<LinearLayout
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:weightSum="13"
+    android:background="#2979FF"
+    android:paddingTop="3dp"
+    android:paddingBottom="2dp"
+
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true">
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Total"
+        android:layout_weight="4"
+        android:gravity="left"
+        android:paddingLeft="15dp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Wifi"
+        android:id="@+id/id_wifi"
+        android:layout_weight="3"
+        android:gravity="right"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:paddingRight="2dp" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Mobile"
+        android:id="@+id/id_mobile"
+        android:layout_weight="3"
+        android:gravity="right"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:paddingRight="2dp" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Total"
+        android:id="@+id/id_total"
+        android:layout_weight="3"
+        android:gravity="right"
+        android:paddingRight="10dp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF" />
+
+</LinearLayout>
+
+
+<!--
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/linearLayout">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="total"
+        android:id="@+id/id_total"
+        android:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="wifi"
+        android:id="@+id/id_wifi"
+        android:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="mobile"
+        android:id="@+id/id_mobile"
+        android:layout_gravity="center_horizontal" />
+</LinearLayout>
+
+<Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Destroy Service"
+    android:id="@+id/button"
+    android:onClick="stopService"
+    android:layout_marginBottom="46dp"
+    android:layout_above="@+id/button2"
+    android:layout_centerHorizontal="true" />
+
+<Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Exit"
+    android:id="@+id/button2"
+    android:layout_marginBottom="68dp"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true" />
+
+<Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Clear Data"
+    android:id="@+id/button3"
+    android:onClick="clearData"
+    android:layout_marginBottom="60dp"
+    android:layout_above="@+id/button"
+    android:layout_centerHorizontal="true" />-->
+
 </RelativeLayout>
