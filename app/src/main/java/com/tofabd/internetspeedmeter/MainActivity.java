@@ -132,6 +132,7 @@ public class MainActivity extends AppCompatActivity
 
                             //DataAdapter dataAdapter = new DataAdapter(createList(30));
 //                            recList.setAdapter(dataAdapter);
+
                             List<DataInfo> temp = createList(30);
                             DataInfo dInfo = new DataInfo();
 
@@ -143,6 +144,8 @@ public class MainActivity extends AppCompatActivity
 
                             dataAdapter.updateData(temp);
                             m++;
+
+
 
 
                         }
@@ -171,6 +174,12 @@ public class MainActivity extends AppCompatActivity
 
         //startActivity(new Intent(MainActivity.this,SettingsActivity.class));
     }
+
+    /**
+     *
+     * @param size of lists
+     * @return list of data of last 30 days
+     */
     public List<DataInfo> createList(int size) {
 
 
@@ -195,13 +204,11 @@ public class MainActivity extends AppCompatActivity
 
             if (i == 1) {
 
-
                 SharedPreferences sp = getSharedPreferences("todaydata", Context.MODE_PRIVATE);
 
                 // convert to megabyte
-                wTemp = (float) (sp.getLong("WIFI_DATA", 0) / 1000000.0);
-                mTemp = (float) (sp.getLong("MOBILE_DATA", 0) / 1000000.0);
-
+                wTemp = (float) (sp.getLong("WIFI_DATA", 0) / 1048576.0);
+                mTemp = (float) (sp.getLong("MOBILE_DATA", 0) / 1048576.0);
                 tTemp = wTemp + mTemp;
                 // tTemp = (double) sp.getLong("TOTAL_DATA", 0) / 1000000.0;
 
@@ -267,6 +274,7 @@ public class MainActivity extends AppCompatActivity
                     wifi = jOb.getString("WIFI_DATA");
                     mobile = jOb.getString("MOBILE_DATA");
                     // total = jOb.getString("TOTAL_DATA");
+
 
 
                     wTemp = (float) (Long.parseLong(wifi) / 1000000.0);
