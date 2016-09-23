@@ -196,7 +196,7 @@ public class DataService extends Service {
             //Log.e("today", Long.toString(saved_totalData + totalData));
 
         } else {
-            //saveData();
+
 
 
             try {
@@ -368,8 +368,8 @@ public class DataService extends Service {
 
         DecimalFormat df = new DecimalFormat("#.##");
 
-        double wifi_data = (double) saved_wifiData / 1000000.0;
-        double mobile_data = (double) saved_mobileData / 1000000.0;
+        double wifi_data = (double) saved_wifiData / 1048576.0;
+        double mobile_data = (double) saved_mobileData / 1048576.0;
 
         String wifi_mobile = "Wifi: " + df.format(wifi_data) + "MB  " + " Mobile: " + df.format(mobile_data) + "MB";
 

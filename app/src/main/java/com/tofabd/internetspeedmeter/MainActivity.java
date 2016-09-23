@@ -4,12 +4,14 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.audiofx.BassBoost;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -31,10 +33,10 @@ import java.util.Calendar;
 import java.util.List;
 
 
-
-
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    final static String MEGABYTE = " MB", GIGABYTE = " GB";
 
     private boolean doubleBackToExitPressedOnce;
     private Handler mHandler = new Handler();
@@ -43,6 +45,13 @@ public class MainActivity extends AppCompatActivity
     Thread dataUpdate;
     private TextView wTotal, mTotal, tTotal;
     static int m = 1;
+
+
+    protected double total_wifi;
+    protected double total_mobile;
+    //protected double total_mobile_wifi;
+
+    List<DataInfo> monthData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +82,6 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-
         wTotal = (TextView) findViewById(R.id.id_wifi);
         mTotal = (TextView) findViewById(R.id.id_mobile);
         tTotal = (TextView) findViewById(R.id.id_total);
@@ -85,8 +93,12 @@ public class MainActivity extends AppCompatActivity
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recList.setLayoutManager(llm);
-        final DataAdapter dataAdapter = new DataAdapter(createList(30));
+        recList.getItemAnimator().setChangeDuration(0);
+
+        monthData = createList(30);
+        final DataAdapter dataAdapter = new DataAdapter(monthData);
         recList.setAdapter(dataAdapter);
+        totalData();
 
 
         doubleBackToExitPressedOnce = false;
@@ -133,19 +145,23 @@ public class MainActivity extends AppCompatActivity
                             //DataAdapter dataAdapter = new DataAdapter(createList(30));
 //                            recList.setAdapter(dataAdapter);
 
-                            List<DataInfo> temp = createList(30);
-                            DataInfo dInfo = new DataInfo();
+//                            List<DataInfo> temp = createList(30);
+//                            DataInfo dInfo = new DataInfo();
+//
+//                            dInfo.date = "Today";
+//                            dInfo.wifi = Integer.toString(m * 1);
+//                            dInfo.mobile = Integer.toString(m * 2);
+//                            dInfo.total = Integer.toString(m * 3);
+//                            temp.add(dInfo);
+//
+//                            dataAdapter.updateData(temp);
+//                            m++;
 
-                            dInfo.date = "Today";
-                            dInfo.wifi = Integer.toString(m * 1);
-                            dInfo.mobile = Integer.toString(m * 2);
-                            dInfo.total = Integer.toString(m * 3);
-                            temp.add(dInfo);
+                            monthData.set(0, todayData());
+                            dataAdapter.notifyItemChanged(0);
+                            Log.e("dhaka", toString().valueOf(total_wifi));
 
-                            dataAdapter.updateData(temp);
-                            m++;
-
-
+                            totalData();
 
 
                         }
@@ -171,12 +187,10 @@ public class MainActivity extends AppCompatActivity
         //  Log.e("astatus main isAlive",Boolean.toString(dataUpdate.isAlive()));
 
 
-
         //startActivity(new Intent(MainActivity.this,SettingsActivity.class));
     }
 
     /**
-     *
      * @param size of lists
      * @return list of data of last 30 days
      */
@@ -185,15 +199,15 @@ public class MainActivity extends AppCompatActivity
 
         List<DataInfo> result = new ArrayList<>();
 
-        String MB = " MB", GB = " GB";
 
-        float count_total = 0, count_wifi = 0, count_mobile = 0;
-        float wTemp, mTemp, tTemp;
+        //total_mobile_wifi = 0;
+        total_wifi = 0;
+        total_mobile = 0;
+
+        double wTemp, mTemp, tTemp;
         DecimalFormat df = new DecimalFormat("#.##");
 
         String wifi = "0", mobile = "0", total = "0";
-        long wifi_data, mobile_data, total_data;
-
         SharedPreferences sp_month = getSharedPreferences("monthdata", Context.MODE_PRIVATE);
         //   SharedPreferences.Editor editor =editor = sp_month.edit();
 
@@ -202,6 +216,14 @@ public class MainActivity extends AppCompatActivity
 
         for (int i = 1; i <= size; i++) {
 
+            if (i == 1) {
+                result.add(todayData());
+                continue;
+            }
+
+
+            //for Today
+            /*
             if (i == 1) {
 
                 SharedPreferences sp = getSharedPreferences("todaydata", Context.MODE_PRIVATE);
@@ -213,8 +235,8 @@ public class MainActivity extends AppCompatActivity
                 // tTemp = (double) sp.getLong("TOTAL_DATA", 0) / 1000000.0;
 
                 //count for total data
-                count_wifi += wTemp;
-                count_mobile += mTemp;
+                total_wifi += wTemp;
+                total_mobile += mTemp;
                 //count_total += tTemp;
 
 
@@ -222,28 +244,28 @@ public class MainActivity extends AppCompatActivity
 
 
                 //check less than Gigabyte or not
-                if (wTemp < 1000) {
+                if (wTemp < 1024) {
                     wifi = df.format(wTemp) + MB; // consider 2 value after decimal point
                 } else {
-                    wifi = df.format(wTemp / 1000) + GB;
+                    wifi = df.format(wTemp / 1024) + GB;
                 }
 
-                if (mTemp < 1000) {
+                if (mTemp < 1024) {
                     mobile = df.format(mTemp) + MB; // consider 2 value after decimal point
 
                 } else {
-                    mobile = df.format(mTemp / 1000) + GB;
+                    mobile = df.format(mTemp / 1024) + GB;
                 }
 
-                if (tTemp < 1000) {
+                if (tTemp < 1024) {
                     total = df.format(tTemp) + MB; // consider 2 value after decimal point
                 } else {
-                    total = df.format(tTemp / 1000) + GB;
+                    total = df.format(tTemp / 1024) + GB;
                 }
 
 
                 // Calendar ca = Calendar.getInstance();
-                // String todayDate = sdf.format(ca.getTime());// get today's date
+                // String mDate = sdf.format(ca.getTime());// get today's date
 
                 DataInfo di = new DataInfo();
 
@@ -255,18 +277,19 @@ public class MainActivity extends AppCompatActivity
 
                 result.add(di);
                 continue;
-            }
+            }*/
 
 
             Calendar ca = Calendar.getInstance();
-            ca.add(Calendar.DATE, (1 - i)); // day decrease
+            ca.add(Calendar.DATE, (1 - i)); // day decrease to get previous day
 
-            String todayDate = sdf.format(ca.getTime());// get  date
+            String mDate = sdf.format(ca.getTime());// get  date
+            List<String> allData = new ArrayList<>();
 
             //check date availabe or not
-            if (sp_month.contains(todayDate)) {
+            if (sp_month.contains(mDate)) {
 
-                String sData = sp_month.getString(todayDate, null); // get saved data
+                String sData = sp_month.getString(mDate, null); // get saved data
                 try {
 
                     JSONObject jOb = new JSONObject(sData);
@@ -276,96 +299,181 @@ public class MainActivity extends AppCompatActivity
                     // total = jOb.getString("TOTAL_DATA");
 
 
-
-                    wTemp = (float) (Long.parseLong(wifi) / 1000000.0);
-                    mTemp = (float) (Long.parseLong(mobile) / 1000000.0);
+                    wTemp = (Long.parseLong(wifi) / 1048576.0);
+                    mTemp = (Long.parseLong(mobile) / 1048576.0);
                     //tTemp = (double) Long.parseLong(total) / 1000000.0;
 
 
                     tTemp = wTemp + mTemp;
+                    allData = dataFormate(wTemp, mTemp, tTemp);
 
                     //     Log.e("outside", Integer.toString(i) + " " + wifi + mobile + Double.toString(wTemp));
 
                     //count for total
-                    count_wifi += wTemp;
-                    count_mobile += mTemp;
+                    total_wifi += wTemp;
+                    total_mobile += mTemp;
+                    //total_mobile_wifi = total_wifi + total_mobile;
+
                     //count_total += tTemp;
 
                     //check less than Gigabyte or not
-                    if (wTemp < 1000) {
-                        wifi = df.format(wTemp) + MB; // consider 2 value after decimal point
+          /*          if (wTemp < 1024) {
+                        wifi = df.format(wTemp) + MEGABYTE; // consider 2 value after decimal point
                     } else {
-                        wifi = df.format(wTemp / 1000) + GB;
+                        wifi = df.format(wTemp / 1024) + GIGABYTE;
                     }
 
-                    if (mTemp < 1000) {
-                        mobile = df.format(mTemp) + MB; // consider 2 value after decimal point
+                    if (mTemp < 1024) {
+                        mobile = df.format(mTemp) + MEGABYTE; // consider 2 value after decimal point
 
                     } else {
-                        mobile = df.format(mTemp / 1000) + GB;
+                        mobile = df.format(mTemp / 1024) + GIGABYTE;
                     }
 
-                    if (tTemp < 1000) {
-                        total = df.format(tTemp) + MB; // consider 2 value after decimal point
+                    if (tTemp < 1024) {
+                        total = df.format(tTemp) + MEGABYTE; // consider 2 value after decimal point
                     } else {
-                        total = df.format(tTemp / 1000) + GB;
+                        total = df.format(tTemp / 1024) + GIGABYTE;
                     }
-
+*/
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else {
 
+                allData = dataFormate(0, 0, 0);
 
-                wifi = "0" + MB;
-                mobile = "0" + MB;
-                total = "0" + MB;
+//
+//                wifi = "0" + MEGABYTE;
+//                mobile = "0" + MEGABYTE;
+//                total = "0" + MEGABYTE;
 
 
             }
 
 
-            DataInfo di = new DataInfo();
+            DataInfo dataInfo = new DataInfo();
 
-            di.date = todayDate;
+            dataInfo.date = mDate;
 
-            di.wifi = wifi;
-            di.mobile = mobile;
-            di.total = total;
+            dataInfo.wifi = allData.get(0);
+            dataInfo.mobile = allData.get(1);
+            dataInfo.total = allData.get(2);
 
-            result.add(di);
+            result.add(dataInfo);
 
         }
+//        total_wifimo = total_wifi + total_mobile;
+//        List<String> totalData = dataFormate(total_wifi, total_mobile, total_wifimo);
 
-        count_total = count_wifi + count_mobile;
-        //check less than Gigabyte or not
-        if (count_wifi < 1000) {
-            wifi = df.format(count_wifi) + MB; // consider 2 value after decimal point
+
+       /* //check less than Gigabyte or not
+        if (total_wifi < 1024) {
+            wifi = df.format(total_wifi) + MB; // consider 2 value after decimal point
         } else {
-            wifi = df.format(count_wifi / 1000) + GB;
+            wifi = df.format(total_wifi / 1024) + GB;
         }
 
-        if (count_mobile < 1000) {
-            mobile = df.format(count_mobile) + MB; // consider 2 value after decimal point
+        if (total_mobile < 1024) {
+            mobile = df.format(total_mobile) + MB; // consider 2 value after decimal point
 
         } else {
-            mobile = df.format(count_mobile / 1000) + GB;
+            mobile = df.format(total_mobile / 1024) + GB;
         }
 
-        if (count_total < 1000) {
-            total = df.format(count_total) + MB; // consider 2 value after decimal point
+        if (total_wifimo < 1024) {
+            total = df.format(total_wifimo) + MB; // consider 2 value after decimal point
         } else {
-            total = df.format(count_total / 1000) + GB;
-        }
-        wTotal.setText(wifi);
-        mTotal.setText(mobile);
-        tTotal.setText(total);
+            total = df.format(total_wifimo / 1024) + GB;
+        }*/
+
+
+//        wTotal.setText(totalData.get(0));
+//        mTotal.setText(totalData.get(1));
+//        tTotal.setText(totalData.get(2));
 
 
         return result;
 
     }
+
+
+    public DataInfo todayData() {
+
+        List<DataInfo> listToday = new ArrayList<>();
+
+        double wTemp, mTemp, tTemp;
+        SharedPreferences sp = getSharedPreferences("todaydata", Context.MODE_PRIVATE);
+        // convert to megabyte
+        wTemp = sp.getLong("WIFI_DATA", 0) / 1048576.0;
+        mTemp = sp.getLong("MOBILE_DATA", 0) / 1048576.0;
+        tTemp = wTemp + mTemp;
+
+        List<String> allData = dataFormate(wTemp, mTemp, tTemp);
+
+        //count for total data
+
+        total_wifi = total_wifi + (wTemp - total_wifi);
+        total_mobile = total_mobile + (mTemp - total_mobile);
+        //total_mobile_wifi = total_wifi + total_mobile;
+
+        // Calendar ca = Calendar.getInstance();
+        // String mDate = sdf.format(ca.getTime());// get today's date
+
+        DataInfo dataInfo = new DataInfo();
+
+        dataInfo.date = "Today";
+        dataInfo.wifi = allData.get(0);
+        dataInfo.mobile = allData.get(1);
+        dataInfo.total = allData.get(2);
+
+        listToday.add(dataInfo);
+
+        Log.e("dhaka", dataInfo.wifi + dataInfo.mobile + dataInfo.total);
+
+        return dataInfo;
+
+    }
+
+
+    public void totalData() {
+
+        List<String> total = dataFormate(total_wifi, total_mobile, total_wifi + total_mobile);
+
+        wTotal.setText(total.get(0));
+        mTotal.setText(total.get(1));
+        tTotal.setText(total.get(2));
+
+    }
+
+    public List<String> dataFormate(double wifi, double mobile, double total) {
+
+        List<String> allData = new ArrayList<>();
+        DecimalFormat df = new DecimalFormat("#.##");
+
+        //check less than Gigabyte or not
+        if (wifi < 1024) {
+            allData.add(df.format(wifi) + MEGABYTE); // consider 2 value after decimal point
+        } else {
+            allData.add(df.format(wifi / 1024) + GIGABYTE);
+        }
+        if (mobile < 1024) {
+            allData.add(df.format(mobile) + MEGABYTE); // consider 2 value after decimal point
+
+        } else {
+            allData.add(df.format(mobile / 1024) + GIGABYTE);
+        }
+        if (total < 1024) {
+            allData.add(df.format(total) + MEGABYTE); // consider 2 value after decimal point
+        } else {
+            allData.add(df.format(total / 1024) + GIGABYTE);
+        }
+
+        return allData;
+
+    }
+
 
     void clearExtraData() {
 
@@ -379,10 +487,10 @@ public class MainActivity extends AppCompatActivity
 
             Calendar ca = Calendar.getInstance();
             ca.add(Calendar.DATE, (1 - i));
-            String todayDate = sdf.format(ca.getTime());// get  date
+            String mDate = sdf.format(ca.getTime());// get  date
 
-            if (sp_month.contains(todayDate)) {
-                editor.remove(todayDate);
+            if (sp_month.contains(mDate)) {
+                editor.remove(mDate);
 
             }
         }
@@ -441,7 +549,7 @@ public class MainActivity extends AppCompatActivity
 //                    .commit();
 
 
-            startActivity(new Intent(MainActivity.this,SettingsActivity.class));
+            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
 
         } else if (id == R.id.action_exit) {
             NotificationManager nMr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -479,14 +587,11 @@ public class MainActivity extends AppCompatActivity
 
         // Log.e("astatus getState",dataUpdate.getState().toString());
         // Log.e("astatus isAlive",Boolean.toString(dataUpdate.isAlive()));
-        if(!dataUpdate.isAlive()){
+        if (!dataUpdate.isAlive()) {
             //dataUpdate.run();
 
         }
         //dataUpdate.start();
-
-
-
 
 
     }
@@ -537,15 +642,15 @@ public class MainActivity extends AppCompatActivity
         }, 5000);
     }
 
-/*    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }*/
+    /*    @Override
+        public void onBackPressed() {
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            if (drawer.isDrawerOpen(GravityCompat.START)) {
+                drawer.closeDrawer(GravityCompat.START);
+            } else {
+                super.onBackPressed();
+            }
+        }*/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
