@@ -257,20 +257,20 @@ public class DataService extends Service {
         //used to find icon
         String s = "0";
 
-        if (receiveData < 1000) {
-            int show_data = (int) receiveData / 100;
+        if (receiveData < 1024) {
+            int show_data = (int) (receiveData / 1024)*10;  //0.1KB/s  to 0.9KB/s
             s = "b" + show_data;
 
-        } else if (receiveData >= 1000 && receiveData < 1000000) {// range 1KB to 999KB
-            int show_data = (int) receiveData / 1000;   //convert byte to KB to make seial
+        } else if (receiveData >= 1024 && receiveData < 1048576) {// range 1KB to 999KB
+            int show_data = (int) receiveData / 1024;   //convert byte to KB to make seial
             s = "k" + show_data; //make icon serial
 
-        } else if (receiveData >= 1000000 && receiveData < 10000000) {//range 1MB to 9.9MB
+        } else if (receiveData >= 1048576 && receiveData < 10485760) {//range 1MB to 9.9MB
 
-            int show_data = (int) receiveData / 100000;
+            int show_data = (int) receiveData / 1048576;
 
             s = "m" + show_data;
-        } else if (receiveData >= 10000000 && receiveData <= 20000000) {
+        } else if (receiveData >= 10485760 && receiveData <= 20000000) {
             int show_data = (int) receiveData / 1000000;
             s = "mm" + show_data;
         } else if (receiveData > 20000000) {
