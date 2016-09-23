@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity
         doubleBackToExitPressedOnce = false;
 
 
-//        sharedPref();
+        sharedPref();
 //
         clearExtraData();
         // Log.e("astatus", "hi");
