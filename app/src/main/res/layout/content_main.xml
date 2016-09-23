@@ -10,6 +10,7 @@
     tools:context="com.tofabd.internetspeedmeter.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
+
     <LinearLayout
         android:id="@+id/id_titlebar"
         android:layout_width="match_parent"
@@ -68,19 +69,21 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/cardList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/total_bar"
         android:layout_below="@+id/id_titlebar"
         android:background="#FFFFFF" />
 
+
     <LinearLayout
+        android:id="@+id/total_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+
+        android:layout_alignParentTop="false"
         android:background="#2979FF"
         android:orientation="horizontal"
-
         android:paddingBottom="2dp"
         android:paddingTop="3dp"
         android:weightSum="13">
@@ -130,66 +133,5 @@
 
     </LinearLayout>
 
-
-    <!--
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/linearLayout">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="total"
-            android:id="@+id/id_total"
-            android:layout_gravity="center_horizontal" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="wifi"
-            android:id="@+id/id_wifi"
-            android:layout_gravity="center_horizontal" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="mobile"
-            android:id="@+id/id_mobile"
-            android:layout_gravity="center_horizontal" />
-    </LinearLayout>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Destroy Service"
-        android:id="@+id/button"
-        android:onClick="stopService"
-        android:layout_marginBottom="46dp"
-        android:layout_above="@+id/button2"
-        android:layout_centerHorizontal="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Exit"
-        android:id="@+id/button2"
-        android:layout_marginBottom="68dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Clear Data"
-        android:id="@+id/button3"
-        android:onClick="clearData"
-        android:layout_marginBottom="60dp"
-        android:layout_above="@+id/button"
-        android:layout_centerHorizontal="true" />-->
 
 </RelativeLayout>
