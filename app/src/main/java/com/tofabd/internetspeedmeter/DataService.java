@@ -10,7 +10,9 @@ import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
+
 import org.json.JSONObject;
+
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -198,7 +200,6 @@ public class DataService extends Service {
         } else {
 
 
-
             try {
 
                 JSONObject jsonObject = new JSONObject();
@@ -246,9 +247,9 @@ public class DataService extends Service {
 
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        SharedPreferences dataPref  = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences dataPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
-        Boolean notification_state = dataPref.getBoolean("notification_state",true);
+        Boolean notification_state = dataPref.getBoolean("notification_state", true);
 
 
         String wifi_mobile_details = getWifiMobileData();
@@ -258,22 +259,25 @@ public class DataService extends Service {
         String s = "0";
 
         if (receiveData < 1024) {
-            int show_data = (int) (receiveData / 1024)*10;  //0.1KB/s  to 0.9KB/s
+            int show_data = (int) (receiveData / 1024) * 10;  //0.1KB/s  to 0.9KB/s
             s = "b" + show_data;
 
         } else if (receiveData >= 1024 && receiveData < 1048576) {// range 1KB to 999KB
             int show_data = (int) receiveData / 1024;   //convert byte to KB to make seial
             s = "k" + show_data; //make icon serial
 
+            Log.e("dhaka2k",s);
+
         } else if (receiveData >= 1048576 && receiveData < 10485760) {//range 1MB to 9.9MB
 
-            int show_data = (int) receiveData / 1048576;
+            int show_data = (int) (receiveData / 104857.6);   // it means (int)((receiveData / 1048576)*10)
 
             s = "m" + show_data;
-        } else if (receiveData >= 10485760 && receiveData <= 20000000) {
-            int show_data = (int) receiveData / 1000000;
+            Log.e("dhaka2",s);
+        } else if (receiveData >= 10485760 && receiveData <= 20971520) {
+            int show_data = (int) receiveData / 1048576;
             s = "mm" + show_data;
-        } else if (receiveData > 20000000) {
+        } else if (receiveData > 20971520) {
             s = "mmm" + "20";
         }
 
@@ -301,15 +305,15 @@ public class DataService extends Service {
         DecimalFormat df = new DecimalFormat("#.##");
 
         String speed = "";
-        if (receiveData < 1000) {
+        if (receiveData < 1024) {
             speed = "Speed " + (int) receiveData + " B/s" + " " + network_name;
 
-        } else if (receiveData < 1000000) {
+        } else if (receiveData < 1048576) {
 
-            speed = "Speed " + (int) receiveData / 1000 + " KB/s" + " " + network_name;
+            speed = "Speed " + (int) receiveData / 1024 + " KB/s" + " " + network_name;
 
         } else {
-            speed = "Speed " + df.format(receiveData / 1000000.0) + " MB/s" + " " + network_name;
+            speed = "Speed " + df.format(receiveData / 1048576) + " MB/s" + " " + network_name;
 
         }
 
@@ -331,16 +335,15 @@ public class DataService extends Service {
                 .build();
 
 
-
         // Log.e("hello notification", Integer.toString(k));
         // Log.e("estatus ",Long.toString(receiveData));
 
 //        try {
 
 //
-        if(notification_state) {
+        if (notification_state) {
             notificationManager.notify(nid, notification);
-        }else {
+        } else {
 
             notificationManager.cancel(nid);
         }
@@ -371,7 +374,24 @@ public class DataService extends Service {
         double wifi_data = (double) saved_wifiData / 1048576.0;
         double mobile_data = (double) saved_mobileData / 1048576.0;
 
-        String wifi_mobile = "Wifi: " + df.format(wifi_data) + "MB  " + " Mobile: " + df.format(mobile_data) + "MB";
+        String wifi_today, mobile_today;
+
+        //check Megabyte or Gigabyte
+        if (wifi_data < 1024) {
+            wifi_today = "Wifi: " + df.format(wifi_data) + "MB  ";
+        } else {
+            wifi_today = "Wifi: " + df.format(wifi_data / 1024) + "GB  ";  //convert to Gigabyte
+
+        }
+
+        if (mobile_data < 1024) {
+            mobile_today = " Mobile: " + df.format(mobile_data) + "MB";
+        } else {
+            mobile_today = " Mobile: " + df.format(mobile_data / 1024) + "GB";
+
+        }
+
+        String wifi_mobile = wifi_today + mobile_today;
 
 
         return wifi_mobile;
