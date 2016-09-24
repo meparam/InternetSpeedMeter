@@ -1,31 +1,19 @@
 package com.tofabd.internetspeedmeter;
 
 
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.audiofx.BassBoost;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.content.Context;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -35,11 +23,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import static android.R.attr.fragment;
 
-
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class ListFragment extends Fragment {
 
     final static String MEGABYTE = " MB", GIGABYTE = " GB";
 
@@ -60,53 +48,25 @@ public class MainActivity extends AppCompatActivity
 
     List<DataInfo> monthData;
 
+
+    public ListFragment() {
+        // Required empty public constructor
+    }
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_main);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View rootView = inflater.inflate(R.layout.fragment_list, container, false);
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        if (!DataService.service_status) {
-            Intent intent = new Intent(this, DataService.class);
-            startService(intent);
-        }
-
-        Intent intentBC = new Intent();
-        intentBC.setAction("com.tofabd.internetmeter");
-        sendBroadcast(intentBC);
-
-
-   /*     wTotal = (TextView) findViewById(R.id.id_wifi);
-        mTotal = (TextView) findViewById(R.id.id_mobile);
-        tTotal = (TextView) findViewById(R.id.id_total);
-
-        //dataUpdate.setName("started");
-
-        final RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
+        wTotal = (TextView) rootView.findViewById(R.id.id_wifi);
+        mTotal = (TextView) rootView.findViewById(R.id.id_mobile);
+        tTotal = (TextView) rootView.findViewById(R.id.id_total);
+        final RecyclerView recList = (RecyclerView) rootView.findViewById(R.id.cardList);
         recList.setHasFixedSize(true);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
+        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recList.setLayoutManager(llm);
         recList.getItemAnimator().setChangeDuration(0);
@@ -115,18 +75,27 @@ public class MainActivity extends AppCompatActivity
         final DataAdapter dataAdapter = new DataAdapter(monthData);
         recList.setAdapter(dataAdapter);
         totalData();
-*/
 
-        doubleBackToExitPressedOnce = false;
 
-/*
+
+//        doubleBackToExitPressedOnce = false;
+
+
         sharedPref();
 //
         clearExtraData();
         // Log.e("astatus", "hi");
 
 
-
+//        if (!DataService.service_status) {
+//            Intent intent = new Intent(getActivity(), DataService.class);
+//            startService(intent);
+//        }
+//
+//
+//        Intent intentBC = new Intent();
+//        intentBC.setAction("com.tofabd.internetmeter");
+//        sendBroadcast(intentBC);
 
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("MMM dd, yyyy");
@@ -134,25 +103,26 @@ public class MainActivity extends AppCompatActivity
         // Log.e("todaytime", df.format(c.getTime()));
         //Log.e("astatus getState",dataUpdate.getState().toString());
 
-        dataUpdate = new Thread(new Runnable() {
+   /*     dataUpdate = new Thread(new Runnable() {
             @Override
             public void run() {
 
                 while (!dataUpdate.getName().equals("stopped")) {
-                    //             Log.e("astatus", "hi");
+                    monthData.set(0, todayData());
+                    dataAdapter.notifyItemChanged(0);
+                    Log.e("dhaka", toString().valueOf(total_wifi));
+
+                    totalData();
+
+                  *//*
                     vHandler.post(new Runnable() {
 
                         @Override
                         public void run() {
 
-                            monthData.set(0, todayData());
-                            dataAdapter.notifyItemChanged(0);
-                            Log.e("dhaka", toString().valueOf(total_wifi));
-
-                            totalData();
 
                         }
-                    });
+                    });*//*
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
@@ -164,22 +134,57 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        dataUpdate.setName("started");
+               dataUpdate.setName("started");
 
         //   Log.e("astatus getState main",dataUpdate.getState().toString());
         //    Log.e("astatus main isAlive",Boolean.toString(dataUpdate.isAlive()));
-        dataUpdate.start();*/
+        dataUpdate.start();
+
+        */
+
+/*
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                monthData.set(0, todayData());
+                dataAdapter.notifyItemChanged(0);
+                Log.e("dhaka", toString().valueOf(total_wifi));
+
+                totalData();
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+*/
+
+
 
         //  Log.e("astatus getState main",dataUpdate.getState().toString());
         //  Log.e("astatus main isAlive",Boolean.toString(dataUpdate.isAlive()));
 
         //startActivity(new Intent(MainActivity.this,SettingsActivity.class));
+
+
+
+
+
+        return rootView;
+
+
+
     }
 
-//     @param size of lists
-//      @return list of data of last 30 days
-//
-/*    public List<DataInfo> createList(int size) {
+    /**
+     * @param size of lists
+     * @return list of data of last 30 days
+     */
+    public List<DataInfo> createList(int size) {
 
         List<DataInfo> result = new ArrayList<>();
         //total_mobile_wifi = 0;
@@ -190,7 +195,7 @@ public class MainActivity extends AppCompatActivity
         DecimalFormat df = new DecimalFormat("#.##");
 
         String wifi = "0", mobile = "0", total = "0";
-        SharedPreferences sp_month = getSharedPreferences("monthdata", Context.MODE_PRIVATE);
+        SharedPreferences sp_month = getActivity().getSharedPreferences("monthdata", Context.MODE_PRIVATE);
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
 
         for (int i = 1; i <= size; i++) {
@@ -245,13 +250,12 @@ public class MainActivity extends AppCompatActivity
         return result;
     }
 
-
     public DataInfo todayData() {
 
         List<DataInfo> listToday = new ArrayList<>();
 
         double wTemp, mTemp, tTemp;
-        SharedPreferences sp = getSharedPreferences("todaydata", Context.MODE_PRIVATE);
+        SharedPreferences sp = getActivity(). getSharedPreferences("todaydata", Context.MODE_PRIVATE);
         // convert to megabyte
         wTemp = sp.getLong("WIFI_DATA", 0) / 1048576.0;
         mTemp = sp.getLong("MOBILE_DATA", 0) / 1048576.0;
@@ -322,7 +326,7 @@ public class MainActivity extends AppCompatActivity
 
     void clearExtraData() {
 
-        SharedPreferences sp_month = getSharedPreferences("monthdata", Context.MODE_PRIVATE);
+        SharedPreferences sp_month = getActivity().getSharedPreferences("monthdata", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp_month.edit();
 
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
@@ -343,7 +347,7 @@ public class MainActivity extends AppCompatActivity
 
     // populate data
     public void sharedPref() {
-        SharedPreferences sp_month = getSharedPreferences("monthdata", Context.MODE_PRIVATE);
+        SharedPreferences sp_month = getActivity(). getSharedPreferences("monthdata", Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = sp_month.edit();
         editor.clear();
@@ -374,41 +378,11 @@ public class MainActivity extends AppCompatActivity
         }
         editor.commit();
 
-    }*/
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-
-//            setContentView(R.layout.fragment_setting);
-//            getFragmentManager().beginTransaction()
-//                    .replace(android.R.id.content, new SettingFragment())
-//                    .commit();
-
-
-            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-
-        } else if (id == R.id.action_exit) {
-            NotificationManager nMr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            nMr.cancel(5000);
-            DataService.notification_status = false;
-
-            dataUpdate.setName("stopped"); // to stop thread
-            finish();
-            //System.exit(0);
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 /*
+
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
         dataUpdate.setName("stopped");
 
@@ -419,7 +393,7 @@ public class MainActivity extends AppCompatActivity
 
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         DataService.notification_status = true;
 
@@ -438,127 +412,7 @@ public class MainActivity extends AppCompatActivity
 
 
     }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        // Log.e("astatus","onRestart");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        // Log.e("astatus","onDestroy");
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        // Log.e("astatus","onStart");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        //  Log.e("astatus","onStop");
-    }*/
-
-    @Override
-    public void onBackPressed() {
-
-        if (doubleBackToExitPressedOnce) {
-            super.onBackPressed();
-            return;
-        }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            this.doubleBackToExitPressedOnce = true;
-
-            Toast.makeText(this, "Press again to quit", Toast.LENGTH_SHORT).show();
-
-            mHandler.postDelayed(new Runnable() {
-
-                @Override
-                public void run() {
-                    //run after 5 sec
-                    doubleBackToExitPressedOnce = false;
-                }
-            }, 5000);
-        }
-
-
-    }
-
-    /*    @Override
-        public void onBackPressed() {
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            if (drawer.isDrawerOpen(GravityCompat.START)) {
-                drawer.closeDrawer(GravityCompat.START);
-            } else {
-                super.onBackPressed();
-            }
-        }*/
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-/*
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 */
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-        Fragment fragment = null;
-
-
-        if (id == R.id.nav_camera) {
-          fragment = new ListFragment();
-
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-        if(fragment!=null){
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_frame, fragment);
-            ft.commit();
-
-        }
-
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
 
 
 }

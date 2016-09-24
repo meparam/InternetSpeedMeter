@@ -10,128 +10,13 @@
     tools:context="com.tofabd.internetspeedmeter.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-
-    <LinearLayout
-        android:id="@+id/id_titlebar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#2979FF"
-        android:orientation="horizontal"
-        android:paddingBottom="2dp"
-        android:paddingTop="3dp"
-        android:weightSum="13">
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="4"
-            android:gravity="left"
-            android:paddingLeft="15dp"
-            android:text="Date"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:gravity="right"
-            android:paddingRight="2dp"
-            android:text="Wifi"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:gravity="right"
-            android:paddingRight="2dp"
-            android:text="Mobile"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:gravity="right"
-            android:paddingRight="10dp"
-            android:text="Total"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/cardList"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/total_bar"
-        android:layout_below="@+id/id_titlebar"
-        android:background="#FFFFFF" />
+        android:id="@+id/content_frame">
 
 
-    <LinearLayout
-        android:id="@+id/total_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-
-        android:layout_alignParentTop="false"
-        android:background="#2979FF"
-        android:orientation="horizontal"
-        android:paddingBottom="2dp"
-        android:paddingTop="3dp"
-        android:weightSum="13">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="4"
-            android:gravity="left"
-            android:paddingLeft="15dp"
-            android:text="Total"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/id_wifi"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:gravity="right"
-            android:paddingRight="2dp"
-            android:text="Wifi"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/id_mobile"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:gravity="right"
-            android:paddingRight="2dp"
-            android:text="Mobile"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/id_total"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:gravity="right"
-            android:paddingRight="10dp"
-            android:text="Total"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold" />
-
-    </LinearLayout>
+    </FrameLayout>
 
 
 </RelativeLayout>

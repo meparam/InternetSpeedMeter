@@ -13,7 +13,6 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
 
-
     <!--&lt;!&ndash; TODO: Remove or change this placeholder text &ndash;&gt;-->
     <!--<string name="hello_blank_fragment">Hello blank fragment</string>-->
     <!--<string name="title_activity_settings">Settings</string>-->
@@ -25,7 +24,7 @@
 
     <!--<string name="pref_title_social_recommendations">Enable social recommendations</string>-->
     <!--<string name="pref_description_social_recommendations">Recommendations for people to contact-->
-        <!--based on your message history-->
+    <!--based on your message history-->
     <!--</string>-->
 
     <!--<string name="pref_title_display_name">Display name</string>-->
@@ -33,14 +32,14 @@
 
     <!--<string name="pref_title_add_friends_to_messages">Add friends to messages</string>-->
     <!--<string-array name="pref_example_list_titles">-->
-        <!--<item>Always</item>-->
-        <!--<item>When possible</item>-->
-        <!--<item>Never</item>-->
+    <!--<item>Always</item>-->
+    <!--<item>When possible</item>-->
+    <!--<item>Never</item>-->
     <!--</string-array>-->
     <!--<string-array name="pref_example_list_values">-->
-        <!--<item>1</item>-->
-        <!--<item>0</item>-->
-        <!--<item>-1</item>-->
+    <!--<item>1</item>-->
+    <!--<item>0</item>-->
+    <!--<item>-1</item>-->
     <!--</string-array>-->
 
     <!--&lt;!&ndash; Example settings for Data & Sync &ndash;&gt;-->
@@ -48,32 +47,32 @@
 
     <!--<string name="pref_title_sync_frequency">Sync frequency</string>-->
     <!--<string-array name="pref_sync_frequency_titles">-->
-        <!--<item>15 minutes</item>-->
-        <!--<item>30 minutes</item>-->
-        <!--<item>1 hour</item>-->
-        <!--<item>3 hours</item>-->
-        <!--<item>6 hours</item>-->
-        <!--<item>Never</item>-->
+    <!--<item>15 minutes</item>-->
+    <!--<item>30 minutes</item>-->
+    <!--<item>1 hour</item>-->
+    <!--<item>3 hours</item>-->
+    <!--<item>6 hours</item>-->
+    <!--<item>Never</item>-->
     <!--</string-array>-->
     <!--<string-array name="pref_sync_frequency_values">-->
-        <!--<item>15</item>-->
-        <!--<item>30</item>-->
-        <!--<item>60</item>-->
-        <!--<item>180</item>-->
-        <!--<item>360</item>-->
-        <!--<item>-1</item>-->
+    <!--<item>15</item>-->
+    <!--<item>30</item>-->
+    <!--<item>60</item>-->
+    <!--<item>180</item>-->
+    <!--<item>360</item>-->
+    <!--<item>-1</item>-->
     <!--</string-array>-->
 
     <!--<string-array name="list_preference_entries">-->
-        <!--<item>Entry 1</item>-->
-        <!--<item>Entry 2</item>-->
-        <!--<item>Entry 3</item>-->
+    <!--<item>Entry 1</item>-->
+    <!--<item>Entry 2</item>-->
+    <!--<item>Entry 3</item>-->
     <!--</string-array>-->
 
     <!--<string-array name="list_preference_entry_values">-->
-        <!--<item>1</item>-->
-        <!--<item>2</item>-->
-        <!--<item>3</item>-->
+    <!--<item>1</item>-->
+    <!--<item>2</item>-->
+    <!--<item>3</item>-->
     <!--</string-array>-->
 
     <!--<string-array name="multi_select_list_preference_default_value" />-->
