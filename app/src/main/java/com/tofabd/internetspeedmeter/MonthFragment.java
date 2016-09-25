@@ -1,7 +1,6 @@
 package com.tofabd.internetspeedmeter;
 
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,7 +26,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ListFragment extends Fragment {
+public class MonthFragment extends Fragment {
 
     final static String MEGABYTE = " MB", GIGABYTE = " GB";
 
@@ -49,7 +48,7 @@ public class ListFragment extends Fragment {
     List<DataInfo> monthData;
 
 
-    public ListFragment() {
+    public MonthFragment() {
         // Required empty public constructor
     }
 
@@ -58,7 +57,7 @@ public class ListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_list, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_month, container, false);
 
 
         wTotal = (TextView) rootView.findViewById(R.id.id_wifi);
@@ -103,7 +102,7 @@ public class ListFragment extends Fragment {
         // Log.e("todaytime", df.format(c.getTime()));
         //Log.e("astatus getState",dataUpdate.getState().toString());
 
-   /*     dataUpdate = new Thread(new Runnable() {
+        dataUpdate = new Thread(new Runnable() {
             @Override
             public void run() {
 
@@ -112,17 +111,19 @@ public class ListFragment extends Fragment {
                     dataAdapter.notifyItemChanged(0);
                     Log.e("dhaka", toString().valueOf(total_wifi));
 
-                    totalData();
+                    //totalData();
 
-                  *//*
+
                     vHandler.post(new Runnable() {
 
                         @Override
                         public void run() {
+                            totalData();
 
 
                         }
-                    });*//*
+                    });
+
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
@@ -140,9 +141,9 @@ public class ListFragment extends Fragment {
         //    Log.e("astatus main isAlive",Boolean.toString(dataUpdate.isAlive()));
         dataUpdate.start();
 
-        */
 
 /*
+
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -152,6 +153,7 @@ public class ListFragment extends Fragment {
                 Log.e("dhaka", toString().valueOf(total_wifi));
 
                 totalData();
+                Log.e("dhaka5","testing");
 
                 try {
                     Thread.sleep(1000);
@@ -379,7 +381,6 @@ public class ListFragment extends Fragment {
         editor.commit();
 
     }
-/*
 
     @Override
     public void onPause() {
@@ -412,7 +413,6 @@ public class ListFragment extends Fragment {
 
 
     }
-*/
 
 
 }

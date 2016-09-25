@@ -1,20 +1,16 @@
 package com.tofabd.internetspeedmeter;
 
 
+import android.app.ActionBar;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.media.audiofx.BassBoost;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -27,15 +23,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONObject;
-
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-
-import static android.R.attr.fragment;
 
 
 public class MainActivity extends AppCompatActivity
@@ -65,6 +53,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -96,6 +85,12 @@ public class MainActivity extends AppCompatActivity
         Intent intentBC = new Intent();
         intentBC.setAction("com.tofabd.internetmeter");
         sendBroadcast(intentBC);
+
+        Fragment fragment = new MonthFragment();
+
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, fragment);
+            ft.commit();
 
 
    /*     wTotal = (TextView) findViewById(R.id.id_wifi);
@@ -533,14 +528,15 @@ public class MainActivity extends AppCompatActivity
 
 
         if (id == R.id.nav_camera) {
-          fragment = new ListFragment();
-
+            fragment = new MonthFragment();
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
-
+            fragment = new LivedataFragment();
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
+            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+
 
         } else if (id == R.id.nav_share) {
 

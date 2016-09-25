@@ -13,6 +13,7 @@ import android.preference.SwitchPreference;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -27,9 +28,13 @@ public class SettingsActivity extends AppCompatActivity {
 
         ActionBar actionBar = getActionBar();
 
+
+
+
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
         getFragmentManager().beginTransaction()
                 .replace(android.R.id.content, new SettingsFragment())
                 .commit();
