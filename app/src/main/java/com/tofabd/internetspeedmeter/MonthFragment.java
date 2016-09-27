@@ -29,7 +29,9 @@ import java.util.List;
 public class MonthFragment extends Fragment {
 
     private final SimpleDateFormat SDF = new SimpleDateFormat("MMM dd, yyyy");
-    private final Calendar CALENDAR = Calendar.getInstance();
+
+
+
     private final DecimalFormat df = new DecimalFormat("#.##");
 
     final static String MEGABYTE = " MB", GIGABYTE = " GB";
@@ -47,6 +49,8 @@ public class MonthFragment extends Fragment {
 
     private DataAdapter dataAdapter;
     private RecyclerView recList;
+
+    private String today_date = null;
 
     List<DataInfo> monthData;
 
@@ -81,8 +85,6 @@ public class MonthFragment extends Fragment {
         clearExtraData();
         //Log.e("astatus", "hi");
 
-
-        //SimpleDateFormat df = new SimpleDateFormat("MMM dd, yyyy");
         liveData();
 
         return rootView;
@@ -151,10 +153,11 @@ public class MonthFragment extends Fragment {
                 result.add(todayData());
                 continue;
             }
+            Calendar calendar = Calendar.getInstance();
 
-            CALENDAR.add(Calendar.DATE, (1 - i)); // day decrease to get previous day
+            calendar.add(Calendar.DATE, (1 - i)); // day decrease to get previous day
 
-            String mDate = SDF.format(CALENDAR.getTime());// get  date
+            String mDate = SDF.format(calendar.getTime());// get  date
             List<String> allData = new ArrayList<>();
 
             //check date availabe or not
@@ -234,6 +237,7 @@ public class MonthFragment extends Fragment {
 
     }
 
+    //show total data as a textview
     public void totalData() {
 
         List<String> total = dataFormate(total_wifi, total_mobile, total_wifi + total_mobile);
@@ -244,6 +248,7 @@ public class MonthFragment extends Fragment {
 
     }
 
+    //Data format to show total data
     public List<String> dataFormate(double wifi, double mobile, double total) {
 
         List<String> allData = new ArrayList<>();
@@ -270,6 +275,7 @@ public class MonthFragment extends Fragment {
 
     }
 
+    //Clear Extra Data after 40 days
     void clearExtraData() {
 
         SharedPreferences sp_month = getActivity().getSharedPreferences("monthdata", Context.MODE_PRIVATE);
@@ -278,9 +284,9 @@ public class MonthFragment extends Fragment {
         //SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
 
         for (int i = 40; i <= 1000; i++) {
-
-            CALENDAR.add(Calendar.DATE, (1 - i));
-            String mDate = SDF.format(CALENDAR.getTime());// get  date
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DATE, (1 - i));
+            String mDate = SDF.format(calendar.getTime());// get  date
 
             if (sp_month.contains(mDate)) {
                 editor.remove(mDate);
@@ -300,13 +306,15 @@ public class MonthFragment extends Fragment {
         //SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
 
         for (int i = 1; i <= 30; i++) {
-            if (i % 2 == 1)
+            if (i % 2 == 1) {
                 continue;
+            }
 
-            CALENDAR.add(Calendar.DATE, (1 - i));
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DATE, (1 - i));
 
             try {
-                String tDate = SDF.format(CALENDAR.getTime());// get today's date
+                String tDate = SDF.format(calendar.getTime());// get today's date
                 JSONObject jsonObject = new JSONObject();
 
                 jsonObject.put("WIFI_DATA", i * 10000906);
