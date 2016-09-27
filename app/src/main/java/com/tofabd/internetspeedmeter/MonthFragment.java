@@ -45,6 +45,9 @@ public class MonthFragment extends Fragment {
     private double today_wifi = 0;
     private double today_mobile = 0;
 
+    private DataAdapter dataAdapter;
+
+
     List<DataInfo> monthData;
 
 
@@ -63,6 +66,7 @@ public class MonthFragment extends Fragment {
         wTotal = (TextView) rootView.findViewById(R.id.id_wifi);
         mTotal = (TextView) rootView.findViewById(R.id.id_mobile);
         tTotal = (TextView) rootView.findViewById(R.id.id_total);
+
         final RecyclerView recList = (RecyclerView) rootView.findViewById(R.id.cardList);
         recList.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
@@ -71,10 +75,9 @@ public class MonthFragment extends Fragment {
         recList.getItemAnimator().setChangeDuration(0);
 
         monthData = createList(30);
-        final DataAdapter dataAdapter = new DataAdapter(monthData);
+        dataAdapter = new DataAdapter(monthData);
         recList.setAdapter(dataAdapter);
         totalData();
-
 
 
 //        doubleBackToExitPressedOnce = false;
@@ -83,7 +86,7 @@ public class MonthFragment extends Fragment {
         sharedPref();
 //
         clearExtraData();
-        // Log.e("astatus", "hi");
+         Log.e("astatus", "hi");
 
 
 //        if (!DataService.service_status) {
@@ -98,27 +101,29 @@ public class MonthFragment extends Fragment {
 
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("MMM dd, yyyy");
+        liveData();
 
         // Log.e("todaytime", df.format(c.getTime()));
         //Log.e("astatus getState",dataUpdate.getState().toString());
 
-        dataUpdate = new Thread(new Runnable() {
+       /* dataUpdate = new Thread(new Runnable() {
             @Override
             public void run() {
 
                 while (!dataUpdate.getName().equals("stopped")) {
-                    monthData.set(0, todayData());
-                    dataAdapter.notifyItemChanged(0);
-                    Log.e("dhaka", toString().valueOf(total_wifi));
-
-                    //totalData();
-
 
                     vHandler.post(new Runnable() {
 
                         @Override
                         public void run() {
-                            totalData();
+                            monthData.set(0, todayData());
+                            dataAdapter.notifyItemChanged(0);
+                            //Log.e("dhaka", toString().valueOf(total_wifi));
+
+                            //totalData();
+
+                            totalData(); //call main thread
+                            Log.e("monthdata", toString().valueOf(total_wifi));
 
 
                         }
@@ -135,11 +140,11 @@ public class MonthFragment extends Fragment {
             }
         });
 
-               dataUpdate.setName("started");
+        dataUpdate.setName("started");
 
         //   Log.e("astatus getState main",dataUpdate.getState().toString());
         //    Log.e("astatus main isAlive",Boolean.toString(dataUpdate.isAlive()));
-        dataUpdate.start();
+        dataUpdate.start();*/
 
 
 /*
@@ -166,19 +171,58 @@ public class MonthFragment extends Fragment {
 */
 
 
-
         //  Log.e("astatus getState main",dataUpdate.getState().toString());
         //  Log.e("astatus main isAlive",Boolean.toString(dataUpdate.isAlive()));
 
         //startActivity(new Intent(MainActivity.this,SettingsActivity.class));
 
 
-
-
-
         return rootView;
 
 
+    }
+
+
+    public void liveData(){
+        dataUpdate = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                while (!dataUpdate.getName().equals("stopped")) {
+
+                    vHandler.post(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            monthData.set(0, todayData());
+                            dataAdapter.notifyItemChanged(0);
+                            //Log.e("dhaka", toString().valueOf(total_wifi));
+
+                            //totalData();
+
+                            totalData(); //call main thread
+                            Log.e("monthdata", toString().valueOf(total_wifi));
+
+
+                        }
+                    });
+
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    //  progressStatus--;
+                }
+
+            }
+        });
+
+        dataUpdate.setName("started");
+
+        //   Log.e("astatus getState main",dataUpdate.getState().toString());
+        //    Log.e("astatus main isAlive",Boolean.toString(dataUpdate.isAlive()));
+        dataUpdate.start();
 
     }
 
@@ -257,7 +301,7 @@ public class MonthFragment extends Fragment {
         List<DataInfo> listToday = new ArrayList<>();
 
         double wTemp, mTemp, tTemp;
-        SharedPreferences sp = getActivity(). getSharedPreferences("todaydata", Context.MODE_PRIVATE);
+        SharedPreferences sp = getActivity().getSharedPreferences("todaydata", Context.MODE_PRIVATE);
         // convert to megabyte
         wTemp = sp.getLong("WIFI_DATA", 0) / 1048576.0;
         mTemp = sp.getLong("MOBILE_DATA", 0) / 1048576.0;
@@ -343,13 +387,13 @@ public class MonthFragment extends Fragment {
 
             }
         }
-        editor.commit();
+        editor.apply();
 
     }
 
     // populate data
     public void sharedPref() {
-        SharedPreferences sp_month = getActivity(). getSharedPreferences("monthdata", Context.MODE_PRIVATE);
+        SharedPreferences sp_month = getActivity().getSharedPreferences("monthdata", Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = sp_month.edit();
         editor.clear();
@@ -378,7 +422,7 @@ public class MonthFragment extends Fragment {
             }
 
         }
-        editor.commit();
+        editor.apply();
 
     }
 
@@ -387,7 +431,7 @@ public class MonthFragment extends Fragment {
         super.onPause();
         dataUpdate.setName("stopped");
 
-        // Log.e("astatus","onPause");
+        Log.e("astatus", "onPause");
         //  Log.e("astatus getState",dataUpdate.getState().toString());
         //finish();
     }
@@ -396,10 +440,12 @@ public class MonthFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
         DataService.notification_status = true;
 
         dataUpdate.setName("started");
-        // Log.e("astatus","onResume");
+        Log.e("astatus", "onResume");
+        Log.e("astatus", dataUpdate.getState().toString());
 
         //dataUpdate.start();
 
@@ -407,11 +453,36 @@ public class MonthFragment extends Fragment {
         // Log.e("astatus isAlive",Boolean.toString(dataUpdate.isAlive()));
         if (!dataUpdate.isAlive()) {
             //dataUpdate.run();
+            liveData();
 
         }
         //dataUpdate.start();
 
 
+    }
+/*    @Override
+    public void onRestart() {
+        super.onRestart();
+         Log.e("astatus","onRestart");
+    }*/
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+         Log.e("astatus","onDestroy");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+         Log.e("astatus","onStart");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+          Log.e("astatus","onStop");
     }
 
 

@@ -5,7 +5,7 @@ package com.tofabd.internetspeedmeter;
  */
 import android.content.Context;
 
-public class DataInfo {
+ public class DataInfo {
     Context context;
 
     protected String date;

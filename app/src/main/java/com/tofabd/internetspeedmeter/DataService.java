@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -25,6 +26,9 @@ public class DataService extends Service {
 
     protected static boolean service_status = false;
     protected static boolean notification_status = true;
+
+    protected static List<Long> downloadList = new ArrayList<>();
+    protected static List<Long> uploadList = new ArrayList<>();
 
     Context context;
 
@@ -101,6 +105,7 @@ public class DataService extends Service {
         }
 
         if (!service_status) {
+
             service_status = true;
             dataThread = new Thread(new MyThreadClass(startId));
             dataThread.setName("showNotification");
@@ -136,7 +141,14 @@ public class DataService extends Service {
         //receiveData = RetrieveData.findData();
         allData = RetrieveData.findData();
 
-        receiveData = allData.get(0) + allData.get(1);
+        Long mDownload, mUpload;
+
+        mDownload = allData.get(0);
+        mUpload = allData.get(1);
+
+        receiveData = mDownload + mUpload;
+
+        storedData(mDownload,mUpload);
 
 
         if (notification_status) {
@@ -266,14 +278,14 @@ public class DataService extends Service {
             int show_data = (int) receiveData / 1024;   //convert byte to KB to make seial
             s = "k" + show_data; //make icon serial
 
-            Log.e("dhaka2k",s);
+            Log.e("dhaka2k", s);
 
         } else if (receiveData >= 1048576 && receiveData < 10485760) {//range 1MB to 9.9MB
 
             int show_data = (int) (receiveData / 104857.6);   // it means (int)((receiveData / 1048576)*10)
 
             s = "m" + show_data;
-            Log.e("dhaka2",s);
+            Log.e("dhaka2", s);
         } else if (receiveData >= 10485760 && receiveData <= 20971520) {
             int show_data = (int) receiveData / 1048576;
             s = "mm" + show_data;
@@ -395,6 +407,23 @@ public class DataService extends Service {
 
 
         return wifi_mobile;
+    }
+
+    public void storedData(Long mDownload,Long mUpload) {
+
+        if (downloadList.size() >= 60) {
+            downloadList.remove(0);
+            uploadList.remove(0);
+
+            downloadList.add(mDownload);
+           uploadList.add(mUpload);
+        } else {
+            downloadList.add(mDownload);
+            uploadList.add(mUpload);
+
+        }
+
+
     }
 
 }

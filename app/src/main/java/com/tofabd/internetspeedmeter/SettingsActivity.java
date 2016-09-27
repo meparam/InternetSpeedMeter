@@ -13,7 +13,6 @@ import android.preference.SwitchPreference;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -27,9 +26,6 @@ public class SettingsActivity extends AppCompatActivity {
         //setContentView(R.layout.activity_settings);
 
         ActionBar actionBar = getActionBar();
-
-
-
 
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -70,7 +66,7 @@ public class SettingsActivity extends AppCompatActivity {
                     // Log.e("boolean :",Boolean.toString(isNotificationOn));
                     SharedPreferences.Editor edit = dataPref.edit();
                     edit.putBoolean("notification_state",isNotificationOn);
-                    edit.commit();
+                    edit.apply();
 
 
 
@@ -115,8 +111,8 @@ public class SettingsActivity extends AppCompatActivity {
                                     editor.clear();
                                     edito2.clear();
 
-                                    editor.commit();
-                                    edito2.commit();
+                                    editor.apply();
+                                    edito2.apply();
 
                                     Toast.makeText(getActivity(), "Data Removed", Toast.LENGTH_LONG).show();
                                 }

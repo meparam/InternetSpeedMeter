@@ -5,6 +5,7 @@ import android.app.ActionBar;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+  /*      FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity
                         .setAction("Action", null).show();
             }
         });
-
+*/
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -88,9 +89,9 @@ public class MainActivity extends AppCompatActivity
 
         Fragment fragment = new MonthFragment();
 
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_frame, fragment);
-            ft.commit();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_frame, fragment);
+        ft.commit();
 
 
    /*     wTotal = (TextView) findViewById(R.id.id_wifi);
@@ -434,6 +435,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+
     @Override
     protected void onRestart() {
         super.onRestart();
@@ -456,7 +458,8 @@ public class MainActivity extends AppCompatActivity
     protected void onStop() {
         super.onStop();
         //  Log.e("astatus","onStop");
-    }*/
+    }
+*/
 
     @Override
     public void onBackPressed() {
@@ -531,7 +534,7 @@ public class MainActivity extends AppCompatActivity
             fragment = new MonthFragment();
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
-            fragment = new LivedataFragment();
+            fragment = new GraphFragment();
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
@@ -543,7 +546,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_send) {
 
         }
-        if(fragment!=null){
+        if (fragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, fragment);
             ft.commit();
@@ -556,5 +559,9 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
 
 }
