@@ -28,17 +28,17 @@ import java.util.List;
  */
 public class MonthFragment extends Fragment {
 
+    private final SimpleDateFormat SDF = new SimpleDateFormat("MMM dd, yyyy");
+    private final Calendar CALENDAR = Calendar.getInstance();
+    private final DecimalFormat df = new DecimalFormat("#.##");
+
     final static String MEGABYTE = " MB", GIGABYTE = " GB";
 
-    private boolean doubleBackToExitPressedOnce;
-    private Handler mHandler = new Handler();
     private Handler vHandler = new Handler();
 
-    Thread dataUpdate;
+    private Thread dataUpdate;
     private TextView wTotal, mTotal, tTotal;
-    static int m = 1;
-
-
+    //static int m = 1;
     private double total_wifi;
     private double total_mobile;
 
@@ -46,28 +46,24 @@ public class MonthFragment extends Fragment {
     private double today_mobile = 0;
 
     private DataAdapter dataAdapter;
-
+    private RecyclerView recList;
 
     List<DataInfo> monthData;
-
 
     public MonthFragment() {
         // Required empty public constructor
     }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_month, container, false);
 
-
         wTotal = (TextView) rootView.findViewById(R.id.id_wifi);
         mTotal = (TextView) rootView.findViewById(R.id.id_mobile);
         tTotal = (TextView) rootView.findViewById(R.id.id_total);
 
-        final RecyclerView recList = (RecyclerView) rootView.findViewById(R.id.cardList);
+        recList = (RecyclerView) rootView.findViewById(R.id.cardList);
         recList.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -75,110 +71,21 @@ public class MonthFragment extends Fragment {
         recList.getItemAnimator().setChangeDuration(0);
 
         monthData = createList(30);
+
         dataAdapter = new DataAdapter(monthData);
         recList.setAdapter(dataAdapter);
+
         totalData();
 
-
-//        doubleBackToExitPressedOnce = false;
-
-
-        sharedPref();
-//
+        sharedPref();//
         clearExtraData();
-         Log.e("astatus", "hi");
+        //Log.e("astatus", "hi");
 
 
-//        if (!DataService.service_status) {
-//            Intent intent = new Intent(getActivity(), DataService.class);
-//            startService(intent);
-//        }
-//
-//
-//        Intent intentBC = new Intent();
-//        intentBC.setAction("com.tofabd.internetmeter");
-//        sendBroadcast(intentBC);
-
-        Calendar c = Calendar.getInstance();
-        SimpleDateFormat df = new SimpleDateFormat("MMM dd, yyyy");
+        //SimpleDateFormat df = new SimpleDateFormat("MMM dd, yyyy");
         liveData();
 
-        // Log.e("todaytime", df.format(c.getTime()));
-        //Log.e("astatus getState",dataUpdate.getState().toString());
-
-       /* dataUpdate = new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-                while (!dataUpdate.getName().equals("stopped")) {
-
-                    vHandler.post(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            monthData.set(0, todayData());
-                            dataAdapter.notifyItemChanged(0);
-                            //Log.e("dhaka", toString().valueOf(total_wifi));
-
-                            //totalData();
-
-                            totalData(); //call main thread
-                            Log.e("monthdata", toString().valueOf(total_wifi));
-
-
-                        }
-                    });
-
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    //  progressStatus--;
-                }
-
-            }
-        });
-
-        dataUpdate.setName("started");
-
-        //   Log.e("astatus getState main",dataUpdate.getState().toString());
-        //    Log.e("astatus main isAlive",Boolean.toString(dataUpdate.isAlive()));
-        dataUpdate.start();*/
-
-
-/*
-
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-
-                monthData.set(0, todayData());
-                dataAdapter.notifyItemChanged(0);
-                Log.e("dhaka", toString().valueOf(total_wifi));
-
-                totalData();
-                Log.e("dhaka5","testing");
-
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-*/
-
-
-        //  Log.e("astatus getState main",dataUpdate.getState().toString());
-        //  Log.e("astatus main isAlive",Boolean.toString(dataUpdate.isAlive()));
-
-        //startActivity(new Intent(MainActivity.this,SettingsActivity.class));
-
-
         return rootView;
-
 
     }
 
@@ -196,13 +103,10 @@ public class MonthFragment extends Fragment {
                         public void run() {
                             monthData.set(0, todayData());
                             dataAdapter.notifyItemChanged(0);
-                            //Log.e("dhaka", toString().valueOf(total_wifi));
-
-                            //totalData();
 
                             totalData(); //call main thread
-                            Log.e("monthdata", toString().valueOf(total_wifi));
 
+                           // Log.e("monthdata", toString().valueOf(total_wifi));
 
                         }
                     });
@@ -220,8 +124,6 @@ public class MonthFragment extends Fragment {
 
         dataUpdate.setName("started");
 
-        //   Log.e("astatus getState main",dataUpdate.getState().toString());
-        //    Log.e("astatus main isAlive",Boolean.toString(dataUpdate.isAlive()));
         dataUpdate.start();
 
     }
@@ -238,13 +140,11 @@ public class MonthFragment extends Fragment {
         total_mobile = 0;
 
         double wTemp, mTemp, tTemp;
-        DecimalFormat df = new DecimalFormat("#.##");
 
         String wifi = "0", mobile = "0", total = "0";
-
         SharedPreferences sp_month = getActivity().getSharedPreferences("monthdata", Context.MODE_PRIVATE);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
+        //SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
 
         for (int i = 1; i <= size; i++) {
             if (i == 1) {
@@ -252,10 +152,9 @@ public class MonthFragment extends Fragment {
                 continue;
             }
 
-            Calendar ca = Calendar.getInstance();
-            ca.add(Calendar.DATE, (1 - i)); // day decrease to get previous day
+            CALENDAR.add(Calendar.DATE, (1 - i)); // day decrease to get previous day
 
-            String mDate = sdf.format(ca.getTime());// get  date
+            String mDate = SDF.format(CALENDAR.getTime());// get  date
             List<String> allData = new ArrayList<>();
 
             //check date availabe or not
@@ -329,7 +228,7 @@ public class MonthFragment extends Fragment {
 
         listToday.add(dataInfo);
 
-        Log.e("dhaka", dataInfo.wifi + dataInfo.mobile + dataInfo.total);
+        //Log.e("dhaka", dataInfo.wifi + dataInfo.mobile + dataInfo.total);
 
         return dataInfo;
 
@@ -348,7 +247,7 @@ public class MonthFragment extends Fragment {
     public List<String> dataFormate(double wifi, double mobile, double total) {
 
         List<String> allData = new ArrayList<>();
-        DecimalFormat df = new DecimalFormat("#.##");
+        //DecimalFormat df = new DecimalFormat("#.##");
         //check less than Gigabyte or not
         if (wifi < 1024) {
             allData.add(df.format(wifi) + MEGABYTE); // consider 2 value after decimal point
@@ -367,7 +266,6 @@ public class MonthFragment extends Fragment {
         } else {
             allData.add(df.format(total / 1024) + GIGABYTE);
         }
-
         return allData;
 
     }
@@ -377,12 +275,12 @@ public class MonthFragment extends Fragment {
         SharedPreferences sp_month = getActivity().getSharedPreferences("monthdata", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp_month.edit();
 
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
+        //SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
 
         for (int i = 40; i <= 1000; i++) {
-            Calendar ca = Calendar.getInstance();
-            ca.add(Calendar.DATE, (1 - i));
-            String mDate = sdf.format(ca.getTime());// get  date
+
+            CALENDAR.add(Calendar.DATE, (1 - i));
+            String mDate = SDF.format(CALENDAR.getTime());// get  date
 
             if (sp_month.contains(mDate)) {
                 editor.remove(mDate);
@@ -390,7 +288,6 @@ public class MonthFragment extends Fragment {
             }
         }
         editor.apply();
-
     }
 
     // populate data
@@ -400,17 +297,16 @@ public class MonthFragment extends Fragment {
         SharedPreferences.Editor editor = sp_month.edit();
         editor.clear();
 
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
+        //SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
 
         for (int i = 1; i <= 30; i++) {
             if (i % 2 == 1)
                 continue;
 
-            Calendar ca = Calendar.getInstance();
-            ca.add(Calendar.DATE, (1 - i));
+            CALENDAR.add(Calendar.DATE, (1 - i));
 
             try {
-                String tDate = sdf.format(ca.getTime());// get today's date
+                String tDate = SDF.format(CALENDAR.getTime());// get today's date
                 JSONObject jsonObject = new JSONObject();
 
                 jsonObject.put("WIFI_DATA", i * 10000906);
@@ -449,16 +345,11 @@ public class MonthFragment extends Fragment {
         Log.e("astatus", "onResume");
         Log.e("astatus", dataUpdate.getState().toString());
 
-        //dataUpdate.start();
-
-        // Log.e("astatus getState",dataUpdate.getState().toString());
-        // Log.e("astatus isAlive",Boolean.toString(dataUpdate.isAlive()));
+        //if thread terminated then call livedata() to start thread
         if (!dataUpdate.isAlive()) {
-            //dataUpdate.run();
             liveData();
 
         }
-        //dataUpdate.start();
 
 
     }
