@@ -329,7 +329,7 @@ public class DataService extends Service {
             speed = "Speed " + (int) receiveData / 1024 + " KB/s" + " " + network_name;
 
         } else {
-            speed = "Speed " + df.format(receiveData / 1048576) + " MB/s" + " " + network_name;
+            speed = "Speed " + df.format((double)receiveData / 1048576) + " MB/s" + " " + network_name;
 
         }
 
@@ -415,23 +415,17 @@ public class DataService extends Service {
 
     public void storedData(Long mDownload, Long mUpload) {
 
+        StoredData.downloadSpeed = mDownload;
+        StoredData.uploadSpeed = mUpload;
 
-        if (StoredData.downloadList.size() >= 60) {
-            StoredData.downloadList.remove(0);
-            StoredData.uploadList.remove(0);
+        StoredData.downloadList.remove(0);
+        StoredData.uploadList.remove(0);
 
-            StoredData.downloadList.add(mDownload);
-            StoredData.uploadList.add(mUpload);
-        } else {
-            StoredData.downloadList.add(mDownload);
-            StoredData.uploadList.add(mUpload);
-
-        }
+        StoredData.downloadList.add(mDownload);
+        StoredData.uploadList.add(mUpload);
 
 
     }
-
-
 
 
 }

@@ -241,7 +241,9 @@ public class MonthFragment extends Fragment {
         DecimalFormat df = new DecimalFormat("#.##");
 
         String wifi = "0", mobile = "0", total = "0";
+
         SharedPreferences sp_month = getActivity().getSharedPreferences("monthdata", Context.MODE_PRIVATE);
+
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
 
         for (int i = 1; i <= size; i++) {

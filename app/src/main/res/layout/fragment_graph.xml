@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/text_download"
                 android:gravity="center"
-                android:drawableLeft="@drawable/ic_file_download_black_36px"/>
+                android:drawableTop="@drawable/ic_file_download_black_36px"/>
 
 
 
@@ -91,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/text_upload"
                 android:gravity="center"
-                android:drawableLeft="@drawable/ic_file_upload_black_36px"/>
+                android:drawableTop="@drawable/ic_file_upload_black_36px"/>
 
 
         </LinearLayout>

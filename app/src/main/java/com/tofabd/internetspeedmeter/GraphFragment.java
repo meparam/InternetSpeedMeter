@@ -40,6 +40,9 @@ public class GraphFragment extends Fragment {
     protected ArrayList<Float> mDownload, mUpload;
     private TextView dSpeed,uSpeed;
 
+    protected List<Long> downloadList;
+    protected List<Long> uploadList;
+
     DecimalFormat df = new DecimalFormat("#.##");
 
     public GraphFragment() {
@@ -57,8 +60,8 @@ public class GraphFragment extends Fragment {
         dSpeed  = (TextView) rootView.findViewById(R.id.text_download);
         uSpeed  = (TextView) rootView.findViewById(R.id.text_upload);
 
-        dSpeed.setText(" KB/s");
-        uSpeed.setText(" KB/s");
+        dSpeed.setText(" ");
+        uSpeed.setText(" ");
 
 
 
@@ -317,27 +320,32 @@ public class GraphFragment extends Fragment {
         mChart.setDescription("Last 60 Seconds");
 
 
+
     }
 
     private void addDataSet() {
+
         float YMax = 1024;
         float limitData = 0;
         String mUnit = " KB/s";
         LineData data = mChart.getData();
         if (data != null) {
 
-            List<Long> downloadList = StoredData.downloadList;
-            List<Long> uploadList = StoredData.uploadList;
+          downloadList = StoredData.downloadList;
+             uploadList = StoredData.uploadList;
 
 
             e1 = new ArrayList<Entry>();
             e2 = new ArrayList<Entry>();
+
+            setSpeed();
 
 
             float max = 0;
             float t1, t2;
 
             for (int i = 0; i < downloadList.size(); i++) {
+
 
                 t1 = (float) downloadList.get(i) / 1024;  //convert o Kilobyte
                 t2 = (float) uploadList.get(i) / 1024;
@@ -352,8 +360,9 @@ public class GraphFragment extends Fragment {
                     max = t2;
                 }
             }
+
             if (max <= 256) {
-                YMax = 256;
+                YMax = 512;
                 limitData = max;
                 mUnit = " KB/s";
 
@@ -390,7 +399,7 @@ public class GraphFragment extends Fragment {
             LineDataSet d2 = new LineDataSet(e2, "Upload");
 
             d1.setLineWidth(2f);
-            d1.setCircleRadius(1f);
+            d1.setCircleRadius(0.5f);
             // d1.setHighLightColor(Color.rgb(230, 0, 0));
             d1.setDrawValues(false);
 
@@ -398,9 +407,10 @@ public class GraphFragment extends Fragment {
             d1.setCircleColor(Color.rgb(51, 153, 51));
             d1.setCircleColorHole(Color.rgb(51, 153, 51));
             d1.setValueTextSize(15f);
+            d1.setDrawCircleHole(false);
 
             d2.setLineWidth(2f);
-            d2.setCircleRadius(1f);
+            d2.setCircleRadius(0.5f);
 
             d2.setColor(Color.RED);
             d2.setCircleColor(Color.RED);
@@ -409,12 +419,15 @@ public class GraphFragment extends Fragment {
             //        d2.setFillColor(Color.rgb(255, 51, 0));
             d2.setHighLightColor(Color.rgb(0, 102, 0));
             d2.setDrawValues(false);
+            d2.setDrawCircleHole(false);
 
             LimitLine ll1 = new LimitLine(max, toString().valueOf(df.format(limitData)) + mUnit);
 
             ll1.setLineWidth(1f);
+
             ll1.enableDashedLine(10f, 10f, 0f);
             ll1.setLabelPosition(LimitLine.LimitLabelPosition.LEFT_TOP);
+
             ll1.setTextSize(12f);
             ll1.setLineColor(Color.rgb(51, 153, 51));
             ll1.setTypeface(Typeface.DEFAULT);
@@ -484,6 +497,9 @@ public class GraphFragment extends Fragment {
             Legend legend = mChart.getLegend();
             legend.setTextSize(15f);
             legend.setTypeface(Typeface.DEFAULT);
+           // legend.setCustom(ColorTemplate.VORDIPLOM_COLORS, new String[] { "Set1", "Set2", "Set3", "Set4", "Set5" });
+            legend.setCustom(new int[]{ Color.rgb(51, 153, 51), Color.rgb(255, 0, 0)},new String[] { "Download  ", "Upload" });
+
             legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
 
 
@@ -503,6 +519,41 @@ public class GraphFragment extends Fragment {
             mChart.invalidate();
 
         }
+    }
+
+    public void setSpeed(){
+
+        Long download_speed;
+        Long  upload_speed;
+
+        String d=" ";
+        String u = " ";
+
+        download_speed=  StoredData.downloadSpeed;
+        upload_speed= StoredData.uploadSpeed;
+
+        if(download_speed<1024){
+            d = download_speed+ " B/s";
+        }else if(download_speed<1048576){
+           d =  df.format(download_speed/1024)+" KB/s";
+        }
+        else if(download_speed>=1048576){
+            d =  df.format((double)download_speed/1048576)+" MB/s";
+        }
+
+        if(upload_speed<1024){
+            u = upload_speed+ " B/s";
+        }else if(upload_speed<1048576){
+            u =  df.format(upload_speed/1024)+" KB/s";
+        }
+        else if(upload_speed>=1048576){
+            u =  df.format((double)upload_speed/1048576)+" MB/s";
+        }
+
+        dSpeed.setText(d);
+        uSpeed.setText(u);
+
+
     }
   /*  private void removeLastEntry(){
         LineData data = mChart.getData();
