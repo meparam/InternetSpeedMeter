@@ -26,9 +26,11 @@ public class DataService extends Service {
 
     protected static boolean service_status = false;
     protected static boolean notification_status = true;
+/*
 
     protected static List<Long> downloadList = new ArrayList<>();
     protected static List<Long> uploadList = new ArrayList<>();
+*/
 
     Context context;
 
@@ -93,6 +95,7 @@ public class DataService extends Service {
 
             SharedPreferences.Editor editor_day = sp_day.edit();
 
+
             Calendar ca = Calendar.getInstance();
             SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
             String tDate = sdf.format(ca.getTime());// get today's date
@@ -148,7 +151,8 @@ public class DataService extends Service {
 
         receiveData = mDownload + mUpload;
 
-        storedData(mDownload,mUpload);
+
+        storedData(mDownload, mUpload);
 
 
         if (notification_status) {
@@ -409,21 +413,25 @@ public class DataService extends Service {
         return wifi_mobile;
     }
 
-    public void storedData(Long mDownload,Long mUpload) {
+    public void storedData(Long mDownload, Long mUpload) {
 
-        if (downloadList.size() >= 60) {
-            downloadList.remove(0);
-            uploadList.remove(0);
 
-            downloadList.add(mDownload);
-           uploadList.add(mUpload);
+        if (StoredData.downloadList.size() >= 60) {
+            StoredData.downloadList.remove(0);
+            StoredData.uploadList.remove(0);
+
+            StoredData.downloadList.add(mDownload);
+            StoredData.uploadList.add(mUpload);
         } else {
-            downloadList.add(mDownload);
-            uploadList.add(mUpload);
+            StoredData.downloadList.add(mDownload);
+            StoredData.uploadList.add(mUpload);
 
         }
 
 
     }
+
+
+
 
 }

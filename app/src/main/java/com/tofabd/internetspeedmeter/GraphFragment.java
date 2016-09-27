@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -20,6 +21,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.text.DecimalFormat;
@@ -35,7 +37,8 @@ public class GraphFragment extends Fragment {
     private Thread dataUpdate;
     private Handler vHandler = new Handler();
     private ArrayList<Entry> e1, e2;
-    private ArrayList<Float> mDownload, mUpload;
+    protected ArrayList<Float> mDownload, mUpload;
+    private TextView dSpeed,uSpeed;
 
     DecimalFormat df = new DecimalFormat("#.##");
 
@@ -51,18 +54,25 @@ public class GraphFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_graph, container, false);
 
+        dSpeed  = (TextView) rootView.findViewById(R.id.text_download);
+        uSpeed  = (TextView) rootView.findViewById(R.id.text_upload);
+
+        dSpeed.setText(" KB/s");
+        uSpeed.setText(" KB/s");
+
+
+
         mChart = (LineChart) rootView.findViewById(R.id.lineChart);
 
         setRetainInstance(true);
 
-        Legend l = mChart.getLegend();
-
         mDownload = new ArrayList<>();
         mUpload = new ArrayList<>();
 
-        setGraph();
 
+        setGraph();
         liveData();
+
 
 //        mChart.setData(cd);
 //        mChart.setDrawGridBackground(true);
@@ -174,8 +184,10 @@ public class GraphFragment extends Fragment {
         String mUnit = " KB/s";
 
 
-        List<Long> downloadList = DataService.downloadList;
-        List<Long> uploadList = DataService.uploadList;
+        List<Long> downloadList = StoredData.downloadList;
+        List<Long> uploadList = StoredData.uploadList;
+
+        //initialize all zero
 
 
         e1 = new ArrayList<Entry>();
@@ -185,6 +197,7 @@ public class GraphFragment extends Fragment {
         float t1, t2;
 
         for (int i = 0; i < downloadList.size(); i++) {
+            Log.e("testing", toString().valueOf(downloadList.size()));
 
             t1 = (float) downloadList.get(i) / 1024;  //convert o Kilobyte
             t2 = (float) uploadList.get(i) / 1024;
@@ -230,13 +243,12 @@ public class GraphFragment extends Fragment {
         sets.add(d1);
 
 
-
         LimitLine ll1 = new LimitLine(max, toString().valueOf(df.format(max)) + mUnit);
         ll1.setLineWidth(1f);
         ll1.enableDashedLine(10f, 10f, 0f);
         ll1.setLabelPosition(LimitLine.LimitLabelPosition.LEFT_TOP);
-        ll1.setTextSize(10f);
-        ll1.setTypeface(Typeface.MONOSPACE);
+        ll1.setTextSize(12f);
+        ll1.setTypeface(Typeface.DEFAULT);
 
         XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -244,10 +256,11 @@ public class GraphFragment extends Fragment {
         xAxis.setDrawAxisLine(true);
         xAxis.setLabelCount(11, true);
 
-
         xAxis.setAxisMinValue(0f);
-        xAxis.setAxisMaxValue(60);
-        xAxis.setTypeface(Typeface.MONOSPACE);
+        xAxis.setAxisMaxValue(59f);
+        xAxis.setDrawLabels(false);
+
+        xAxis.setTypeface(Typeface.DEFAULT);
         // xAxis.setValueFormatter();
 
 
@@ -260,6 +273,7 @@ public class GraphFragment extends Fragment {
         leftAxis.setAxisMaxValue(YMax);
         leftAxis.setAxisMinValue(0f);
         leftAxis.setAxisMinValue(0f); // this replaces setStartAtZero(true)
+        leftAxis.setTextSize(12f);
         leftAxis.enableGridDashedLine(5f, 5f, 1f);
 
         leftAxis.removeAllLimitLines();
@@ -300,7 +314,8 @@ public class GraphFragment extends Fragment {
         mChart.setGridBackgroundColor(Color.rgb(230, 230, 230));
 
         mChart.setTouchEnabled(false);
-        mChart.setDescription("");
+        mChart.setDescription("Last 60 Seconds");
+
 
     }
 
@@ -311,13 +326,13 @@ public class GraphFragment extends Fragment {
         LineData data = mChart.getData();
         if (data != null) {
 
-
-            List<Long> downloadList = DataService.downloadList;
-            List<Long> uploadList = DataService.uploadList;
+            List<Long> downloadList = StoredData.downloadList;
+            List<Long> uploadList = StoredData.uploadList;
 
 
             e1 = new ArrayList<Entry>();
             e2 = new ArrayList<Entry>();
+
 
             float max = 0;
             float t1, t2;
@@ -337,39 +352,35 @@ public class GraphFragment extends Fragment {
                     max = t2;
                 }
             }
-            if (max <=256) {
+            if (max <= 256) {
                 YMax = 256;
                 limitData = max;
                 mUnit = " KB/s";
 
-            }else if(max<=1024){
+            } else if (max <= 1024) {
                 YMax = 1024;
                 limitData = max;
                 mUnit = " KB/s";
 
 
-            }
-            else if(max<=4096){
+            } else if (max <= 4096) {
                 YMax = 4096;
-                limitData = max/1024;
+                limitData = max / 1024;
                 mUnit = " MB/s";
 
-            }
-            else if(max<=8192){
+            } else if (max <= 8192) {
                 YMax = 8192;
-                limitData = max/1024;
+                limitData = max / 1024;
                 mUnit = " MB/s";
 
-            }
-            else if(max<=16384){
+            } else if (max <= 16384) {
                 YMax = 16384;
-                limitData = max/1024;
+                limitData = max / 1024;
                 mUnit = " MB/s";
 
-            }
-            else{
+            } else {
                 YMax = 32768;
-                limitData = max/1024;
+                limitData = max / 1024;
                 mUnit = " MB/s";
 
             }
@@ -400,11 +411,13 @@ public class GraphFragment extends Fragment {
             d2.setDrawValues(false);
 
             LimitLine ll1 = new LimitLine(max, toString().valueOf(df.format(limitData)) + mUnit);
+
             ll1.setLineWidth(1f);
             ll1.enableDashedLine(10f, 10f, 0f);
             ll1.setLabelPosition(LimitLine.LimitLabelPosition.LEFT_TOP);
-            ll1.setTextSize(10f);
-            ll1.setTypeface(Typeface.DEFAULT_BOLD);
+            ll1.setTextSize(12f);
+            ll1.setLineColor(Color.rgb(51, 153, 51));
+            ll1.setTypeface(Typeface.DEFAULT);
 
             XAxis xAxis = mChart.getXAxis();
             xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -414,9 +427,11 @@ public class GraphFragment extends Fragment {
 
 
             xAxis.setAxisMinValue(0f);
-            xAxis.setAxisMaxValue(60);
-            xAxis.setTypeface(Typeface.MONOSPACE);
-            // xAxis.setValueFormatter();
+            xAxis.setAxisMaxValue(59f);
+            xAxis.setDrawLabels(false);
+
+
+            xAxis.setTypeface(Typeface.DEFAULT);
 
 
             xAxis.enableGridDashedLine(5f, 5f, 1f);
@@ -434,7 +449,7 @@ public class GraphFragment extends Fragment {
             leftAxis.setDrawLimitLinesBehindData(true);
 
 
-            mChart.getAxisRight().setEnabled(false);
+            mChart.getAxisRight().setEnabled(true);
 
 
             YAxis rightAxis = mChart.getAxisRight();
@@ -445,7 +460,7 @@ public class GraphFragment extends Fragment {
             rightAxis.setDrawGridLines(false);
 
             //rightAxis.setDrawLabels(false);
-            rightAxis.setAxisMaxValue(1024f);
+            rightAxis.setAxisMaxValue(YMax/1024);
             rightAxis.setAxisMinValue(0f); // this replaces setStartAtZero(tru
 
 
@@ -466,6 +481,18 @@ public class GraphFragment extends Fragment {
             data.addDataSet(d2);
             data.addDataSet(d1);
 
+            Legend legend = mChart.getLegend();
+            legend.setTextSize(15f);
+            legend.setTypeface(Typeface.DEFAULT);
+            legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
+
+
+
+         /*   List<String> st = new ArrayList<>();
+            st.add("Last  30 Seconds");
+            legend.setComputedLabels(st);
+*/
+
 
             mChart.setData(data);
 
@@ -474,6 +501,7 @@ public class GraphFragment extends Fragment {
 
 
             mChart.invalidate();
+
         }
     }
   /*  private void removeLastEntry(){
@@ -531,9 +559,6 @@ public class GraphFragment extends Fragment {
 
 
     }
-
-
-
 
 
 }

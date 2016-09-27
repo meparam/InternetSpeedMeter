@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity
 
         if (!DataService.service_status) {
             Intent intent = new Intent(this, DataService.class);
+            StoredData.setZero();
             startService(intent);
         }
 

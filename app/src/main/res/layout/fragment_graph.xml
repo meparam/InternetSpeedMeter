@@ -1,8 +1,13 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.tofabd.internetspeedmeter.GraphFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -11,26 +16,91 @@
         android:elevation="2dp">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:id="@+id/id_title">
 
             <TextView
                 android:text="KB/s"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/id_speed"
+                android:id="@+id/unit_left"
                 android:textStyle="normal|bold"
-                android:paddingLeft="5dp" />
+                android:paddingLeft="5dp"
+                android:layout_weight="1"
+                android:gravity="left"/>
+            <TextView
+                android:text="MB/s"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/unit_right"
+                android:textStyle="normal|bold"
+                android:paddingLeft="5dp"
+                android:layout_weight="1"
+                android:gravity="right"/>
+
         </LinearLayout>
 
+
         <!-- TODO: Update blank fragment layout -->
-    <com.github.mikephil.charting.charts.LineChart
+
+
+        <com.github.mikephil.charting.charts.LineChart
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:id="@+id/lineChart"
 
        />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_weight="1">
+
+            <TextView
+                android:text="TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/text_download"
+                android:gravity="center"
+                android:drawableLeft="@drawable/ic_file_download_black_36px"/>
+
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_weight="1">
+
+            <TextView
+                android:text="TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/text_upload"
+                android:gravity="center"
+                android:drawableLeft="@drawable/ic_file_upload_black_36px"/>
+
+
+        </LinearLayout>
+        </LinearLayout>
+
+
+
+
     </LinearLayout>
+    </ScrollView>
 
 </FrameLayout>
