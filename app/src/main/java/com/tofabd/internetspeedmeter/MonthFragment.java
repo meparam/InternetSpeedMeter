@@ -52,6 +52,7 @@ public class MonthFragment extends Fragment {
 
     private String today_date = null;
 
+
     List<DataInfo> monthData;
 
     public MonthFragment() {
@@ -99,12 +100,34 @@ public class MonthFragment extends Fragment {
 
                 while (!dataUpdate.getName().equals("stopped")) {
 
+                    Calendar ca = Calendar.getInstance();
+                    final String temp_today = SDF.format(ca.getTime());// get today's date
+
                     vHandler.post(new Runnable() {
 
                         @Override
                         public void run() {
-                            monthData.set(0, todayData());
-                            dataAdapter.notifyItemChanged(0);
+                            // check today's date
+                            if(!temp_today.equals(today_date)){
+
+                                monthData.set(0, todayData());
+                                dataAdapter.notifyItemChanged(0);
+
+                            }else {
+                                Log.e("datechange",temp_today);
+                                today_wifi = 0;
+                                today_mobile = 0;
+
+                                monthData = createList(30);  // to update total month data
+                                dataAdapter.dataList = monthData;
+                                dataAdapter.notifyDataSetChanged();
+
+                                monthData.set(0, todayData());
+                                dataAdapter.notifyItemChanged(0);
+
+
+                            }
+
 
                             totalData(); //call main thread
 
@@ -203,6 +226,10 @@ public class MonthFragment extends Fragment {
     public DataInfo todayData() {
 
         List<DataInfo> listToday = new ArrayList<>();
+
+        Calendar ca = Calendar.getInstance();
+        today_date = SDF.format(ca.getTime());// get today's date
+
 
         double wTemp, mTemp, tTemp;
         SharedPreferences sp = getActivity().getSharedPreferences("todaydata", Context.MODE_PRIVATE);
