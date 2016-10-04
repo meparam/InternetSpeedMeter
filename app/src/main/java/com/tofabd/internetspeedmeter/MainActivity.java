@@ -12,6 +12,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -78,9 +79,12 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        if(!StoredData.isSetData) {
+            StoredData.setZero();
+        }
+
         if (!DataService.service_status) {
             Intent intent = new Intent(this, DataService.class);
-            StoredData.setZero();
             startService(intent);
         }
 
@@ -381,7 +385,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+    /*    if (id == R.id.action_settings) {
 
 //            setContentView(R.layout.fragment_setting);
 //            getFragmentManager().beginTransaction()
@@ -391,7 +395,8 @@ public class MainActivity extends AppCompatActivity
 
             startActivity(new Intent(MainActivity.this, SettingsActivity.class));
 
-        } else if (id == R.id.action_exit) {
+        }*/
+        if (id == R.id.action_exit) {
             NotificationManager nMr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             nMr.cancel(5000);
             DataService.notification_status = false;
@@ -536,11 +541,8 @@ public class MainActivity extends AppCompatActivity
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
             fragment = new GraphFragment();
-        } else if (id == R.id.nav_slideshow) {
-
         } else if (id == R.id.nav_manage) {
             startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-
 
         } else if (id == R.id.nav_share) {
 

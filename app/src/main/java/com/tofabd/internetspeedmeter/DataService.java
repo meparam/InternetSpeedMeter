@@ -102,7 +102,7 @@ public class DataService extends Service {
 
             editor_day.putString("today_date", tDate);
 
-            editor_day.commit();
+            editor_day.apply();
 
 
         }
@@ -209,7 +209,7 @@ public class DataService extends Service {
             day_editor.putLong("MOBILE_DATA", mobileData + saved_mobileData);
             day_editor.putLong("WIFI_DATA", wifiData + saved_wifiData);
 
-            day_editor.commit();
+            day_editor.apply();
 
             //Log.e("today", Long.toString(saved_totalData + totalData));
 
@@ -222,7 +222,7 @@ public class DataService extends Service {
 
                 //.put("today_data",sharedpreferences.getString("today_date",null));
 
-                //save data as a json object
+                //save today's total data as a json object
                 jsonObject.put("WIFI_DATA", sp_day.getLong("WIFI_DATA", 0));
                 jsonObject.put("MOBILE_DATA", sp_day.getLong("MOBILE_DATA", 0));
                 //jsonObject.put("TOTAL_DATA", sp_day.getLong("TOTAL_DATA", 0));
@@ -232,14 +232,14 @@ public class DataService extends Service {
 
                 // previous day's data save to monthdata preference
                 month_editor.putString(saved_date, jsonObject.toString());
-                month_editor.commit();
+                month_editor.apply();
 
                 SharedPreferences.Editor day_editor = sp_day.edit();
 
                 //update new date by tDate
                 day_editor.clear();
                 day_editor.putString("today_date", tDate);
-                day_editor.commit();
+                day_editor.apply();
 
 
             } catch (Exception e) {
@@ -282,14 +282,16 @@ public class DataService extends Service {
             int show_data = (int) receiveData / 1024;   //convert byte to KB to make seial
             s = "k" + show_data; //make icon serial
 
-            Log.e("dhaka2k", s);
+            //Log.e("dhaka2k","test"+toString().valueOf(StoredData.downloadList.size()));
+            //Log.e("dhaka2k", s);
+
 
         } else if (receiveData >= 1048576 && receiveData < 10485760) {//range 1MB to 9.9MB
 
             int show_data = (int) (receiveData / 104857.6);   // it means (int)((receiveData / 1048576)*10)
 
             s = "m" + show_data;
-            Log.e("dhaka2", s);
+            //Log.e("dhaka2", s);
         } else if (receiveData >= 10485760 && receiveData <= 20971520) {
             int show_data = (int) receiveData / 1048576;
             s = "mm" + show_data;
@@ -418,14 +420,18 @@ public class DataService extends Service {
         StoredData.downloadSpeed = mDownload;
         StoredData.uploadSpeed = mUpload;
 
-        StoredData.downloadList.remove(0);
-        StoredData.uploadList.remove(0);
+        if(StoredData.isSetData) {
+            StoredData.downloadList.remove(0);
+            StoredData.uploadList.remove(0);
 
-        StoredData.downloadList.add(mDownload);
-        StoredData.uploadList.add(mUpload);
+            StoredData.downloadList.add(mDownload);
+            StoredData.uploadList.add(mUpload);
+        }
+
+        Log.e("storeddata","test "+toString().valueOf(StoredData.downloadList.size()));
+
 
 
     }
-
 
 }

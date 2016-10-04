@@ -31,7 +31,6 @@ public class MonthFragment extends Fragment {
     private final SimpleDateFormat SDF = new SimpleDateFormat("MMM dd, yyyy");
 
 
-
     private final DecimalFormat df = new DecimalFormat("#.##");
 
     final static String MEGABYTE = " MB", GIGABYTE = " GB";
@@ -58,6 +57,7 @@ public class MonthFragment extends Fragment {
     public MonthFragment() {
         // Required empty public constructor
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -82,7 +82,7 @@ public class MonthFragment extends Fragment {
 
         totalData();
 
-        sharedPref();//
+        //sharedPref();//
         clearExtraData();
         //Log.e("astatus", "hi");
 
@@ -93,7 +93,7 @@ public class MonthFragment extends Fragment {
     }
 
 
-    public void liveData(){
+    public void liveData() {
         dataUpdate = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -108,30 +108,32 @@ public class MonthFragment extends Fragment {
                         @Override
                         public void run() {
                             // check today's date
-                            if(!temp_today.equals(today_date)){
+                            if (temp_today.equals(today_date)) {
 
                                 monthData.set(0, todayData());
                                 dataAdapter.notifyItemChanged(0);
+                                Log.e("datechange", temp_today);
 
-                            }else {
-                                Log.e("datechange",temp_today);
+                            } else {
+
                                 today_wifi = 0;
                                 today_mobile = 0;
 
                                 monthData = createList(30);  // to update total month data
-                                dataAdapter.dataList = monthData;
+                                dataAdapter.dataList = monthData;  //update adapter list
                                 dataAdapter.notifyDataSetChanged();
 
                                 monthData.set(0, todayData());
                                 dataAdapter.notifyItemChanged(0);
 
+                                //Log.e("datechange",temp_today);
 
                             }
 
 
                             totalData(); //call main thread
 
-                           // Log.e("monthdata", toString().valueOf(total_wifi));
+                            // Log.e("monthdata", toString().valueOf(total_wifi));
 
                         }
                     });
@@ -231,11 +233,21 @@ public class MonthFragment extends Fragment {
         today_date = SDF.format(ca.getTime());// get today's date
 
 
-        double wTemp, mTemp, tTemp;
-        SharedPreferences sp = getActivity().getSharedPreferences("todaydata", Context.MODE_PRIVATE);
-        // convert to megabyte
-        wTemp = sp.getLong("WIFI_DATA", 0) / 1048576.0;
-        mTemp = sp.getLong("MOBILE_DATA", 0) / 1048576.0;
+        double wTemp=0, mTemp=0, tTemp=0;
+
+
+        try {
+            SharedPreferences sp = getActivity().getSharedPreferences("todaydata", Context.MODE_PRIVATE);
+            // convert to megabyte
+            wTemp = sp.getLong("WIFI_DATA", 0) / 1048576.0;
+            mTemp = sp.getLong("MOBILE_DATA", 0) / 1048576.0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("crashed","hello");  // to check crash, crash coz unsolved :(
+
+        }
+
+
         tTemp = wTemp + mTemp;
 
         List<String> allData = dataFormate(wTemp, mTemp, tTemp);
@@ -398,19 +410,19 @@ public class MonthFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-         Log.e("astatus","onDestroy");
+        Log.e("astatus", "onDestroy");
     }
 
     @Override
     public void onStart() {
         super.onStart();
-         Log.e("astatus","onStart");
+        Log.e("astatus", "onStart");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-          Log.e("astatus","onStop");
+        Log.e("astatus", "onStop");
     }
 
 

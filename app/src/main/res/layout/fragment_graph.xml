@@ -36,9 +36,9 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/unit_right"
                 android:textStyle="normal|bold"
-                android:paddingLeft="5dp"
                 android:layout_weight="1"
-                android:gravity="right"/>
+                android:gravity="right"
+                android:paddingRight="5dp" />
 
         </LinearLayout>
 
