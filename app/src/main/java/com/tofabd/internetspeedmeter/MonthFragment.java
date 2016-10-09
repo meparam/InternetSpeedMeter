@@ -14,6 +14,10 @@ import android.view.ViewGroup;
 import android.content.Context;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.NativeExpressAdView;
+
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
@@ -63,6 +67,32 @@ public class MonthFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_month, container, false);
+
+
+/*
+        AdView mAdView = (AdView) rootView.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);*/
+
+
+ /*       AdView mAdView = (AdView)rootView.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice("6E8CE60CF539130C49612B9FE52FF32B")
+                .build();
+        mAdView.loadAd(adRequest);
+*/
+
+ /*       NativeExpressAdView adView = (NativeExpressAdView)rootView.findViewById(R.id.adView_home);
+              AdRequest request = new AdRequest.Builder()
+                .addTestDevice("6E8CE60CF539130C49612B9FE52FF32B")
+                .build();
+        adView.loadAd(request);
+*/
+/*        NativeExpressAdView adView = (NativeExpressAdView)view.findViewById(R.id.adView_home);
+        AdRequest request = new AdRequest.Builder()
+                .build();
+        adView.loadAd(request);*/
+
 
         wTotal = (TextView) rootView.findViewById(R.id.id_wifi);
         mTotal = (TextView) rootView.findViewById(R.id.id_mobile);

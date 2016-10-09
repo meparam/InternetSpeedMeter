@@ -25,6 +25,8 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.MobileAds;
+
 import java.util.List;
 
 
@@ -59,6 +61,8 @@ public class MainActivity extends AppCompatActivity
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        
+        MobileAds.initialize(getApplicationContext(),  " ca-app-pub-8293202984732468~9540306436");
 
 
   /*      FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

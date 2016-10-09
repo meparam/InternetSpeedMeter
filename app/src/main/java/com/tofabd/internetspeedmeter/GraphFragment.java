@@ -23,6 +23,8 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.ViewPortHandler;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.NativeExpressAdView;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -56,6 +58,18 @@ public class GraphFragment extends Fragment {
 
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_graph, container, false);
+
+
+        NativeExpressAdView adView = (NativeExpressAdView)rootView.findViewById(R.id.adView_home);
+        AdRequest request = new AdRequest.Builder()
+                .addTestDevice("6E8CE60CF539130C49612B9FE52FF32B")
+                .build();
+        adView.loadAd(request);
+
+/*        NativeExpressAdView adView = (NativeExpressAdView)view.findViewById(R.id.adView_home);
+        AdRequest request = new AdRequest.Builder()
+                .build();
+        adView.loadAd(request);*/
 
         dSpeed = (TextView) rootView.findViewById(R.id.text_download);
         uSpeed = (TextView) rootView.findViewById(R.id.text_upload);

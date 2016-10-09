@@ -11,6 +11,10 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    
+    
+    <string name="native_home">ca-app-pub-8293202984732468/2017039636</string>
+    <string name="banner_home">ca-app-pub-8293202984732468/1707485238</string>
 
 
     <!--&lt;!&ndash; TODO: Remove or change this placeholder text &ndash;&gt;-->
