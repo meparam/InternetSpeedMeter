@@ -8,16 +8,14 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
-
 
         <LinearLayout
             android:id="@+id/id_titlebar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
-            android:background="#2979FF"
+            android:background="@color/colorPrimary"
             android:orientation="horizontal"
             android:paddingBottom="2dp"
             android:paddingTop="3dp"
@@ -68,56 +66,33 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
+
         <RelativeLayout
-            android:id="@+id/id_rel"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <!--    <ScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_above="@+id/total_bar"
-                    android:layout_below="@+id/id_titlebar">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-
-
-
-
-                    </LinearLayout>
-                </ScrollView>
-    -->
-            <!--<ScrollView-->
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <LinearLayout
+                android:id="@+id/monthlist"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_alignParentTop="true"
+                android:orientation="horizontal">
 
                 <android.support.v7.widget.RecyclerView
+
                     android:id="@+id/cardList"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_above="@+id/total_bar"
-                    android:layout_below="@+id/id_titlebar"
+                    android:clipToPadding="false"
                     android:background="#FFFFFF" />
-
-
             </LinearLayout>
-            <!--</ScrollView>-->
 
             <LinearLayout
                 android:id="@+id/total_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="false"
-                android:layout_alignParentBottom="true"
+                android:layout_below="@+id/monthlist"
                 android:background="#2979FF"
                 android:orientation="horizontal"
                 android:paddingBottom="2dp"
@@ -170,40 +145,65 @@
             </LinearLayout>
 
 
-           <!-- <LinearLayout
-                android:id="@+id/bottom"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_below="@id/total_bar"
-                android:orientation="vertical">
-
-                <com.google.android.gms.ads.AdView
-                    android:id="@+id/adView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    ads:adSize="SMART_BANNER"
-                    ads:adUnitId="@string/banner_home">
-
-                </com.google.android.gms.ads.AdView>
-
-                &lt;!&ndash;
-                                <com.google.android.gms.ads.NativeExpressAdView
-                                    android:id="@+id/adView_home"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_marginTop="0dp"
-                                    ads:adSize="360x100"
-                                    ads:adUnitId="@string/native_home">
-
-                                </com.google.android.gms.ads.NativeExpressAdView>
-                                &ndash;&gt;
-            </LinearLayout>-->
-
 
         </RelativeLayout>
 
 
+
+
+
+        <!-- <LinearLayout
+             android:id="@+id/bottom"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_alignParentBottom="true"
+             android:layout_below="@id/total_bar"
+             android:orientation="vertical">
+
+             <com.google.android.gms.ads.AdView
+                 android:id="@+id/adView"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 ads:adSize="SMART_BANNER"
+                 ads:adUnitId="@string/banner_home">
+
+             </com.google.android.gms.ads.AdView>
+
+             &lt;!&ndash;
+                             <com.google.android.gms.ads.NativeExpressAdView
+                                 android:id="@+id/adView_home"
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="wrap_content"
+                                 android:layout_gravity="center"
+                                 android:layout_marginTop="0dp"
+                                 ads:adSize="360x100"
+                                 ads:adUnitId="@string/native_home">
+
+                             </com.google.android.gms.ads.NativeExpressAdView>
+                             &ndash;&gt;
+         </LinearLayout>-->
+
+
     </LinearLayout>
+
+      <!--  <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+
+            android:orientation="horizontal">
+
+            <com.google.android.gms.ads.AdView
+                android:id="@+id/adView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                ads:adSize="SMART_BANNER"
+                ads:adUnitId="@string/banner_home">
+
+            </com.google.android.gms.ads.AdView>
+
+        </LinearLayout>
+-->
+
+
 </FrameLayout>
