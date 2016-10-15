@@ -15,6 +15,8 @@ import android.content.Context;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.data.LineRadarDataSet;
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
@@ -78,11 +80,35 @@ public class MonthFragment extends Fragment {
         mAdView.loadAd(adRequest);*/
 
 
-    /*    AdView mAdView = (AdView)rootView.findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder()
+      final AdView mAdView = (AdView)rootView.findViewById(R.id.adView);
+      final  AdRequest adRequest = new AdRequest.Builder()
                 .addTestDevice("6E8CE60CF539130C49612B9FE52FF32B")
                 .build();
-        mAdView.loadAd(adRequest);*/
+
+        mAdView.loadAd(adRequest);
+
+        mAdView.setVisibility(View.GONE);
+
+        mAdView.setAdListener(new AdListener() {
+                      @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+            }
+
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+            }
+
+
+            @Override
+            public void onAdLoaded() {
+                mAdView.setVisibility(View.VISIBLE);
+                //mAdView.loadAd(adRequest);
+                super.onAdLoaded();
+
+            }
+        });
 
 
 
@@ -93,7 +119,8 @@ public class MonthFragment extends Fragment {
         adView.loadAd(request);*/
 
 
- /*       NativeExpressAdView adView = (NativeExpressAdView)rootView.findViewById(R.id.adView_home);
+/*
+        NativeExpressAdView adView = (NativeExpressAdView)rootView.findViewById(R.id.adView_home);
               AdRequest request = new AdRequest.Builder()
                 .addTestDevice("6E8CE60CF539130C49612B9FE52FF32B")
                 .build();
@@ -104,6 +131,8 @@ public class MonthFragment extends Fragment {
         wTotal = (TextView) rootView.findViewById(R.id.id_wifi);
         mTotal = (TextView) rootView.findViewById(R.id.id_mobile);
         tTotal = (TextView) rootView.findViewById(R.id.id_total);
+
+
 
         recList = (RecyclerView) rootView.findViewById(R.id.cardList);
         recList.setHasFixedSize(true);
