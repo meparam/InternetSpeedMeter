@@ -31,7 +31,6 @@ import java.util.Calendar;
 import java.util.List;
 
 
-
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -80,8 +79,8 @@ public class MonthFragment extends Fragment {
         mAdView.loadAd(adRequest);*/
 
 
-      final AdView mAdView = (AdView)rootView.findViewById(R.id.adView);
-      final  AdRequest adRequest = new AdRequest.Builder()
+        final AdView mAdView = (AdView) rootView.findViewById(R.id.adView);
+        final AdRequest adRequest = new AdRequest.Builder()
                 .addTestDevice("6E8CE60CF539130C49612B9FE52FF32B")
                 .build();
 
@@ -90,7 +89,7 @@ public class MonthFragment extends Fragment {
         mAdView.setVisibility(View.GONE);
 
         mAdView.setAdListener(new AdListener() {
-                      @Override
+            @Override
             public void onAdClosed() {
                 super.onAdClosed();
             }
@@ -131,7 +130,6 @@ public class MonthFragment extends Fragment {
         wTotal = (TextView) rootView.findViewById(R.id.id_wifi);
         mTotal = (TextView) rootView.findViewById(R.id.id_mobile);
         tTotal = (TextView) rootView.findViewById(R.id.id_total);
-
 
 
         recList = (RecyclerView) rootView.findViewById(R.id.cardList);
@@ -299,7 +297,7 @@ public class MonthFragment extends Fragment {
         today_date = SDF.format(ca.getTime());// get today's date
 
 
-        double wTemp=0, mTemp=0, tTemp=0;
+        double wTemp = 0, mTemp = 0, tTemp = 0;
 
 
         try {
@@ -309,7 +307,7 @@ public class MonthFragment extends Fragment {
             mTemp = sp.getLong("MOBILE_DATA", 0) / 1048576.0;
         } catch (Exception e) {
             e.printStackTrace();
-            Log.e("crashed","hello");  // to check crash, crash coz unsolved :(
+            Log.e("crashed", "hello");  // to check crash, crash coz unsolved :(
 
         }
 

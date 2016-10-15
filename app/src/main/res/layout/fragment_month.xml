@@ -5,12 +5,10 @@
     android:layout_height="match_parent"
     tools:context="com.tofabd.internetspeedmeter.MonthFragment">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
         <LinearLayout
             android:id="@+id/id_titlebar"
             android:layout_width="match_parent"
@@ -21,7 +19,6 @@
             android:paddingBottom="2dp"
             android:paddingTop="3dp"
             android:weightSum="13">
-
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="0dp"
@@ -32,7 +29,6 @@
                 android:text="Date"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold" />
-
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="0dp"
@@ -43,7 +39,6 @@
                 android:text="Wifi"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold" />
-
             <TextView
                 android:id="@+id/textView3"
                 android:layout_width="0dp"
@@ -70,9 +65,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            >
+            android:layout_height="wrap_content">
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -90,10 +83,7 @@
                         android:layout_height="wrap_content"
                         android:background="#FFFFFF"
                         android:clipToPadding="false" />
-
-
                 </LinearLayout>
-
             </ScrollView>
 
             <LinearLayout
@@ -152,12 +142,14 @@
                     android:textStyle="bold" />
 
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/bottom_ad"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_alignParentBottom="true"
-                android:id="@+id/bottom_ad">
+                android:orientation="vertical">
+
                 <com.google.android.gms.ads.AdView
                     android:id="@+id/adView"
                     android:layout_width="wrap_content"
