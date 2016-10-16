@@ -114,6 +114,11 @@ public class DataService extends Service {
             dataThread.setName("showNotification");
             dataThread.start();
 
+
+            if(!StoredData.isSetData) {
+                StoredData.setZero();
+            }
+
         }
 
 

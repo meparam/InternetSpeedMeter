@@ -451,10 +451,11 @@ public class MonthFragment extends Fragment {
         super.onResume();
 
         DataService.notification_status = true;
-
         dataUpdate.setName("started");
+
         Log.e("astatus", "onResume");
         Log.e("astatus", dataUpdate.getState().toString());
+
 
         //if thread terminated then call livedata() to start thread
         if (!dataUpdate.isAlive()) {

@@ -231,7 +231,6 @@ public class GraphFragment extends Fragment {
         }
         if (max < 256) {
             YMax = 512;
-
         }
 
         LineDataSet d1 = new LineDataSet(e1, "Download");
@@ -274,7 +273,7 @@ public class GraphFragment extends Fragment {
         xAxis.setLabelCount(11, true);
 
         xAxis.setAxisMinValue(0f);
-        xAxis.setAxisMaxValue(59f);
+        xAxis.setAxisMaxValue(299f);
         xAxis.setDrawLabels(false);
 
         xAxis.setTypeface(Typeface.DEFAULT);
@@ -470,7 +469,7 @@ public class GraphFragment extends Fragment {
             xAxis.setLabelCount(11, true);
 
             xAxis.setAxisMinValue(0f);
-            xAxis.setAxisMaxValue(59f);
+            xAxis.setAxisMaxValue(299f);
             xAxis.setDrawLabels(true);
 
 
@@ -504,9 +503,6 @@ public class GraphFragment extends Fragment {
             rightAxis.setDrawGridLines(false);
 
             //rightAxis.setDrawLabels(false);
-
-
-
 
 
             //  int color = mColors[count % mColors.length];

@@ -23,10 +23,10 @@ public class NetworkUtil {
 
 
     /**
-     *
      * @param context
      * @return Connection Type which is Wifi or Mobile or No Connection
      */
+
     public static int getConnectivityStatus(Context context) {
         //Toast.makeText(context, "Working", Toast.LENGTH_SHORT).show();
         ConnectivityManager cm = (ConnectivityManager) context
@@ -87,7 +87,7 @@ public class NetworkUtil {
 
 
             return connInfo;
-        } else if (network_status == "mobile_enabled") {
+        } else if (network_status.equals("mobile_enabled")) {
 
             connInfo.add("mobile_enabled");
             TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
